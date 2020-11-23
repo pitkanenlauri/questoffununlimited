@@ -9,28 +9,34 @@ def main():
     """
     Main loop for the whole program.
     """
-    clock = pg.time.Clock()
+    state_dict = tools.create_state_dict()
+    game_data = tools.create_game_data_dict()
+    gm = tools.GameStatesManager()
+    gm.setup(state_dict, c.SANDY_COVE)
+    gm.state.start_up(game_data)
     
     while True:
         dt = clock.tick(c.FPS)
+        
         for event in pg.event.get():
             if (event.type == pg.QUIT or 
                 event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 return
+            
         keys = pg.key.get_pressed()
-
-def setup():
-    """ 
-    Initializes the pygame and sets up display window.
-    """
+        
+        # Update current state through GameStateManager.
+        gm.update(window, keys, dt)
+        
+        
+if __name__ == '__main__':
     pg.init()
     # Centers game window.
     os.environ['SDL_VIDEO_CENTERED'] = 'TRUE'
     pg.display.set_caption(c.CAPTION)
-    pg.display.set_mode(c.WINDOW_SIZE)
+    window = pg.display.set_mode(c.WINDOW_SIZE)
+    clock = pg.time.Clock()
     
-if __name__ == '__main__':
-    setup()
     main()
     pg.quit()
     sys.exit()
