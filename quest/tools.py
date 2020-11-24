@@ -1,6 +1,3 @@
-import constants as c
-import states
-
 class GameStatesManager():
     """
     Control class for managing game states.
@@ -20,22 +17,48 @@ class GameStatesManager():
         self.state = self.state_dict[self.state_name]
     
     def update(self, window, keys, dt):
+        """
+        Checks if a state is done. State is flipped if necessary 
+        and state.update is called.
+        """
         if self.state.done:
             self.flip_state()
         self.state.update(window, keys, dt)
         
     def flip_state(self):
+        """
+        Changes current state and performs cleanup for exiting state and 
+        startup for new state.
+        """
+        previous, self.state_name = self.state_name, self.state.next
+        game_data = self.state.cleanup()
+        self.state = self.state_dict[self.state_name]
+        self.state.startup(game_data)
+        self.state.previous = previous
+        
+class _State():
+    """
+    Template class for all game states to inherit from.
+    """
+    def __init__(self):
+        self.done = False
+        self.game_data = None
+        self.next = None
+        self.previous = None
+    
+    def start_up(self, game_data):
+        self.game_data = game_data
+    
+    def cleanup(self):
+        self.done = False
+        return self.game_data
+    
+    def update(self, surface, keys, dt):
+        """
+        Update function for state. Must be overloaded in children.
+        """
         pass
     
-
-def create_state_dict():
-    """
-    Creates a dictionary for keeping track of game states.
-    """
-    state_dict = {c.SANDY_COVE: states.MapState(c.SANDY_COVE)
-    }
-    
-    return state_dict
 
 def create_game_data_dict():
     """
