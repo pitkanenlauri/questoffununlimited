@@ -16,7 +16,7 @@ def main():
     gm.state.start_up(game_data)
     
     while True:
-        dt = clock.tick(c.FPS)
+        dt = clock.tick(c.FPS) / 10
         for event in pg.event.get():
             if (event.type == pg.QUIT or 
                 event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):

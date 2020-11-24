@@ -1,20 +1,20 @@
-class GameStatesManager():
+class GameStatesManager:
     """
     Control class for managing game states.
     """
     def __init__(self):
-        self.state_dict = {}
+        self.sprite_state_dict = {}
         self.state_name = None
         self.state = None
     
     def setup(self, state_dict, start_state):
         """
         Given a dictionary of States and a State to start in, builds the 
-        self.state_dict.
+        self.sprite_state_dict.
         """
-        self.state_dict = state_dict
+        self.sprite_state_dict = state_dict
         self.state_name = start_state
-        self.state = self.state_dict[self.state_name]
+        self.state = self.sprite_state_dict[self.state_name]
     
     def update(self, window, keys, dt):
         """
@@ -32,11 +32,11 @@ class GameStatesManager():
         """
         previous, self.state_name = self.state_name, self.state.next
         game_data = self.state.cleanup()
-        self.state = self.state_dict[self.state_name]
+        self.state = self.sprite_state_dict[self.state_name]
         self.state.startup(game_data)
         self.state.previous = previous
         
-class _State():
+class _State:
     """
     Template class for all game states to inherit from.
     """
@@ -67,5 +67,4 @@ def create_game_data_dict():
     """
     data_dict = {'last_location': None,
     }
-    
     return data_dict

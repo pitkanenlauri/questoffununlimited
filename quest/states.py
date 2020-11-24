@@ -1,3 +1,6 @@
+import pygame as pg
+
+from sprites import Player 
 from tools import _State
 
 class MapState(_State):
@@ -8,6 +11,13 @@ class MapState(_State):
     def __init__(self, name):
         super().__init__()
         self.name = name
+        
+        # Test
+        self.player = Player(0, 0, 'resting', 'down')
     
     def update(self, window, keys, dt):
-        pass
+        self.player.update(keys, dt)
+        window.fill((0,0,0))
+        window.blit(self.player.image, self.player.rect)
+        pg.display.flip()
+        
