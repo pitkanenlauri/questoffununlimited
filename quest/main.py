@@ -8,7 +8,7 @@ import states
 
 def main():
     game_data = tools.create_game_data_dict()
-    # Creates a dictionary for keeping track of game states.
+    # Create a dictionary to keep track of game states.
     state_dict = {c.SANDY_COVE: states.MapState(c.SANDY_COVE)
     }
     gm = tools.GameStatesManager()
@@ -16,19 +16,19 @@ def main():
     gm.state.start_up(game_data)
     
     while True:
-        dt = clock.tick(c.FPS) / 10
+        dt = clock.tick(c.FPS) / 32
         for event in pg.event.get():
             if (event.type == pg.QUIT or 
                 event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 return
         keys = pg.key.get_pressed()
-        # Update current state through GameStateManager.
+        # Update state through GameStateManager.
         gm.update(window, keys, dt)
         
         
 if __name__ == '__main__':
     pg.init()
-    # Centers game window.
+    # Center game window.
     os.environ['SDL_VIDEO_CENTERED'] = 'TRUE'
     pg.display.set_caption(c.CAPTION)
     window = pg.display.set_mode(c.WINDOW_SIZE)

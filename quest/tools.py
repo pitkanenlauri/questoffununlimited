@@ -3,22 +3,22 @@ class GameStatesManager:
     Control class for managing game states.
     """
     def __init__(self):
-        self.sprite_state_dict = {}
+        self.state_dict = {}
         self.state_name = None
         self.state = None
     
     def setup(self, state_dict, start_state):
         """
-        Given a dictionary of States and a State to start in, builds the 
-        self.sprite_state_dict.
+        Given a dictionary of states and a state to start in, builds the 
+        self.state_dict.
         """
-        self.sprite_state_dict = state_dict
+        self.state_dict = state_dict
         self.state_name = start_state
-        self.state = self.sprite_state_dict[self.state_name]
+        self.state = self.state_dict[self.state_name]
     
     def update(self, window, keys, dt):
         """
-        Checks if a state is done. State is flipped if necessary 
+        Checks if a state is done. Changes state if necessary 
         and state.update is called.
         """
         if self.state.done:
@@ -27,12 +27,12 @@ class GameStatesManager:
         
     def flip_state(self):
         """
-        Changes current state and performs cleanup for exiting state and 
-        startup for new state.
+        Changes to a new state and performs cleanup for exiting state 
+        and startup for new state. (Most importantly passing on game data.)
         """
         previous, self.state_name = self.state_name, self.state.next
         game_data = self.state.cleanup()
-        self.state = self.sprite_state_dict[self.state_name]
+        self.state = self.state_dict[self.state_name]
         self.state.startup(game_data)
         self.state.previous = previous
         
@@ -62,8 +62,8 @@ class _State:
 
 def create_game_data_dict():
     """
-    Creates a dictionary to keep track of game data carried between states 
-    and for save game functionality.
+    Creates a dictionary of game data to be carried 
+    between states and for save game functionality.
     """
     data_dict = {'last_location': None,
     }
