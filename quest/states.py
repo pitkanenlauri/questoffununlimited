@@ -1,9 +1,9 @@
 import pygame as pg
 
 from sprites import Player, Sprite
-from tools import _State
+from tools import State
 
-class MapState(_State):
+class MapState(State):
     """
     Main playing state. Handles player movement, sprite updates, 
     resulting interaction and drawing of the map view.
@@ -13,15 +13,15 @@ class MapState(_State):
         self.name = name
         
         # Test
-        self.all = pg.sprite.Group()
+        self.all_sprites = pg.sprite.Group()
         self.obstacles = pg.sprite.Group()
         
-        self.player = Player(0, 0, 'resting', 'down')
-        self.all.add(self.player)
+        self.player = Player(16, 16, 'resting', 'down')
+        self.all_sprites.add(self.player)
         
         self.obstacle = Sprite('obstacle', 80, 80)
         self.obstacles.add(self.obstacle)
-        self.all.add(self.obstacle)
+        self.all_sprites.add(self.obstacle)
         
         self.grid = pg.sprite.Sprite()
         self.grid.image = pg.image.load('grid.png').convert_alpha()
@@ -40,7 +40,8 @@ class MapState(_State):
         
         window.fill((0, 0, 0))
         window.blit(self.grid.image, self.grid.rect)
-        for sprite in self.all:
+        
+        for sprite in self.all_sprites:
             window.blit(sprite.image, sprite.rect)
         
         new = pg.transform.scale2x(window)

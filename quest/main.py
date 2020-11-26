@@ -22,8 +22,13 @@ def main():
                 event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 return
         keys = pg.key.get_pressed()
-        # Update state through GameStateManager.
+        # Update game state through GameStateManager.
         gm.update(window, keys, dt)
+        
+        # Show fps in caption.
+        fps = clock.get_fps()
+        with_fps = "{} - {:.2f} FPS".format(c.CAPTION, fps)
+        pg.display.set_caption(with_fps)
         
         
 if __name__ == '__main__':

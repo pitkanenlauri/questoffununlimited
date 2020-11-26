@@ -8,9 +8,9 @@ class Sprite(pg.sprite.Sprite):
         self.name = name
         self.action = action
         self.direction = direction
-        # Keeps track of distance when moving between tiles.
-        self.move_distance = 0.0
-        self.move_pixel = 0.0
+        self.speed = 1
+        self.distance = 0
+        self.pixels_moved = 0
         
         self.action_dict = self.create_action_dict()
         self.vector_dict = self.create_vector_dict()
@@ -18,9 +18,6 @@ class Sprite(pg.sprite.Sprite):
         # Test
         self.image = pg.image.load(self.name + '.png').convert_alpha()
         self.rect = self.image.get_rect(left=x, top=y)
-        
-        # Location in tile grid coordinates.
-        self.tile_x, self.tile_y = self.get_tile_coordinates()
     
     def create_action_dict(self):
         action_dict = {'resting': self.resting,
@@ -43,90 +40,71 @@ class Sprite(pg.sprite.Sprite):
     
     def resting(self):
         self.correct_position()
-            
+
+    def begin_resting(self):
+        self.action = 'resting'
+        self.correct_position()
+        
     def moving(self):
         """
         Moves sprite from one tile to the next based on direction.
         """
-        px = self.vector_dict[self.direction][0] * self.dt
-        py = self.vector_dict[self.direction][1] * self.dt
-        self.move_pixel += abs(px + py)
-        self.move_distance += self.move_pixel
+        # Calculate the change in distance based on speed. (s = s_0 + vt)
+        self.distance += self.speed * self.dt
         
-        if self.move_pixel >= 1:
+        # Distance moved is stored in self.distance, but game movement happens 
+        # only when distance is over one pixel.
+        if self.distance >= 1:
+            pixels_to_move = int(round(self.distance))
+            
+            # move_ip moves rect by given x and y offset to self.direction
             self.rect.move_ip(
-                int(self.vector_dict[self.direction][0] * self.move_pixel),
-                int(self.vector_dict[self.direction][1] * self.move_pixel))
-            self.move_distance = int(self.move_distance)
-            self.move_pixel = 0.0
-        
-        if self.move_distance >= c.TILE_WIDTH:
-            self.action = 'resting'
-            self.move_distance = 0.0
-            self.move_pixel = 0.0
+                self.vector_dict[self.direction][0] * pixels_to_move,
+                self.vector_dict[self.direction][1] * pixels_to_move)
+            
+            self.pixels_moved += pixels_to_move
+            self.distance = 0.0
+            
+            # Move one tile at a time.
+            if self.pixels_moved >= c.TILE_WIDTH:
+                self.begin_resting()
+                self.pixels_moved = 0
     
     def begin_moving(self, direction):
-        self.direction = direction
         self.action = 'moving'
-    
+        self.direction = direction
+
     def correct_position(self):
         """
-        Adjust sprite position to be centered on tile if not.
+        Adjusts sprites position to be centered on a tile.
         """
-        x, y = self.get_tile_coordinates()
         x_off = self.rect.x % c.TILE_WIDTH
         y_off = self.rect.y % c.TILE_WIDTH
-        if self.rect.x % c.TILE_WIDTH != 0:
+        
+        if x_off != 0:
             if x_off <= c.TILE_WIDTH / 2:
-                self.rect.x = x
+                self.rect.x -= x_off
             else:
-                self.rect.x = x + c.TILE_WIDTH
-        if self.rect.y % c.TILE_WIDTH != 0:
+                self.rect.x += (c.TILE_WIDTH - x_off)
+        
+        if y_off != 0:
             if y_off <= c.TILE_WIDTH / 2:
-                self.rect.y = y
+                self.rect.y -= y_off
             else:
-                self.rect.y = y + c.TILE_WIDTH
-    
-    def get_tile_coordinates(self):
-        """
-        Converts pygame coordinates into tile coordinates.
-        """
-        if self.rect.x == 0:
-            tile_x = 0
-        elif self.rect.x % c.TILE_WIDTH == 0:
-            tile_x = (self.rect.x // c.TILE_WIDTH)
-        else:
-            tile_x = 0
+                self.rect.y += (c.TILE_WIDTH - y_off)
 
-        if self.rect.y == 0:
-            tile_y = 0
-        elif self.rect.y % c.TILE_WIDTH == 0:
-            tile_y = (self.rect.y // c.TILE_WIDTH)
-        else:
-            tile_y = 0
         
-        return tile_x, tile_y
-        
-
 class Player(Sprite):
     def __init__(self, x, y, action, direction):
         super().__init__('player', x, y, action, direction)
+        self.speed = 2
         
-    
     def update(self, keys, dt):
         self.keys = keys
         self.check_for_input()
         self.dt = dt
-        self.tile_x, self.tile_y = self.get_tile_coordinates()
         action_function = self.action_dict[self.action]
         action_function()
-        
-        # Test - See if tile and rect coords update correctly.
-        self.tile_x, self.tile_y = self.get_tile_coordinates()
-        xt, yt = self.get_tile_coordinates()
-        x, y = self.rect.x, self.rect.y
-        print("tile: ", xt, yt)
-        print("coord:", x//c.TILE_WIDTH, y//c.TILE_WIDTH, "\n")
     
     def check_for_input(self):
         if self.action == 'resting':
@@ -139,4 +117,4 @@ class Player(Sprite):
             elif self.keys[pg.K_RIGHT]:
                 self.begin_moving('right')
     
-                
+    

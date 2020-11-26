@@ -36,7 +36,7 @@ class GameStatesManager:
         self.state.startup(game_data)
         self.state.previous = previous
         
-class _State:
+class State:
     """
     Template class for all game states to inherit from.
     """
