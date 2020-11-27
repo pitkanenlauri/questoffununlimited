@@ -1,4 +1,5 @@
 import pygame as pg
+import random
 
 import constants as c
 
@@ -21,7 +22,8 @@ class Sprite(pg.sprite.Sprite):
     
     def create_action_dict(self):
         action_dict = {'resting': self.resting,
-                      'moving':  self.moving
+                      'moving':  self.moving,
+                      'auto_moving': self.auto_moving
         }
         return action_dict
     
@@ -35,16 +37,13 @@ class Sprite(pg.sprite.Sprite):
     
     def update(self, dt):
         self.dt = dt
+        
         action_function = self.action_dict[self.action]
         action_function()
     
     def resting(self):
         self.correct_position()
-
-    def begin_resting(self):
-        self.action = 'resting'
-        self.correct_position()
-        
+    
     def moving(self):
         """
         Moves sprite from one tile to the next based on direction.
@@ -70,10 +69,19 @@ class Sprite(pg.sprite.Sprite):
                 self.begin_resting()
                 self.pixels_moved = 0
     
+    def begin_resting(self):
+        self.action = 'resting'
+        self.distance = 0
+        self.pixels_moved = 0
+        self.correct_position()    
+    
     def begin_moving(self, direction):
         self.action = 'moving'
         self.direction = direction
-
+    
+    def auto_moving(self):
+        pass
+    
     def correct_position(self):
         """
         Adjusts sprites position to be centered on a tile.
@@ -92,13 +100,13 @@ class Sprite(pg.sprite.Sprite):
                 self.rect.y -= y_off
             else:
                 self.rect.y += (c.TILE_WIDTH - y_off)
+    
 
-        
 class Player(Sprite):
     def __init__(self, x, y, action, direction):
         super().__init__('player', x, y, action, direction)
         self.speed = 2
-        
+    
     def update(self, keys, dt):
         self.keys = keys
         self.check_for_input()
@@ -117,4 +125,19 @@ class Player(Sprite):
             elif self.keys[pg.K_RIGHT]:
                 self.begin_moving('right')
     
+class Square(Sprite):
+    def __init__(self, name, x, y):
+        super().__init__(name, x, y)
+        self.moves = ['up', 'down', 'left', 'right']
+        self.speed = 0.5
+    
+    def auto_moving(self):
+        self.begin_moving(self.moves[random.randint(0, 3)])
+    
+    def update(self, dt):
+        self.dt = dt
+        if self.action == 'resting':
+            self.auto_moving()
+        action_function = self.action_dict[self.action]
+        action_function()
     

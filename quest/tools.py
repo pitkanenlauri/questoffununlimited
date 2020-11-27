@@ -1,3 +1,5 @@
+import pygame as pg
+
 class GameStatesManager:
     """
     Control class for managing game states.
@@ -53,7 +55,7 @@ class State:
         self.done = False
         return self.game_data
     
-    def update(self, surface, keys, dt):
+    def update(self, window, keys, dt):
         """
         Update function for state. Must be overloaded in children.
         """
@@ -68,3 +70,33 @@ def create_game_data_dict():
     data_dict = {'last_location': None,
     }
     return data_dict
+
+
+class Camera:
+    """
+    Class to handle world scrolling. Applying moves target rect position so 
+    that screen view is centered on source_rect.
+    NOTE: 320 and 240 are because used tileset is 16 bits and we scale it 2x.
+    Incase you remove 2x tile gfx scaling change to WIDTH and HEIGHT.
+    """
+    def __init__(self, map_width, map_height):
+        self.state = pg.Rect(0, 0, map_width, map_height)
+    
+    def apply(self, target):
+        """
+        Offsets target sprite position according to camera state.
+        """
+        return target.rect.move(self.state.topleft)
+    
+    def update(self, source_rect):
+        """
+        Updates camera to follow source_rect 
+        """
+        x = - source_rect.center[0] + 320 // 2
+        y = - source_rect.center[1] + 240 // 2
+        position = pg.Vector2(self.state.topleft)
+        position += (pg.Vector2((x, y)) 
+                           - pg.Vector2(self.state.topleft))
+        self.state.topleft = (int(position.x), int(position.y))
+        self.state.x = max(-(self.state.width - 320), min(0, self.state.x))
+        self.state.y = max(-(self.state.height - 240), min(0, self.state.y))
