@@ -1,6 +1,6 @@
 import pygame as pg
 
-from sprites import Player, Sprite, Square
+from sprites import Player, Sprite, Wanderer
 from tools import State, Camera
 
 class MapState(State):
@@ -11,7 +11,7 @@ class MapState(State):
     def __init__(self, name):
         super().__init__()
         self.name = name
-        self.camera = Camera(320, 240) # 320 240 = test grid.png dimensions
+        self.camera = Camera(640, 480) # 640 480 = test grid.png dimensions
         
         # Test
         self.all_sprites = pg.sprite.Group()
@@ -20,7 +20,7 @@ class MapState(State):
         self.player = Player(16, 16, 'resting', 'down')
         self.all_sprites.add(self.player)
         
-        self.square = Square('square', 160, 96)
+        self.square = Wanderer('square', 160, 96)
         self.all_sprites.add(self.square)
         
         for i in range(10):

@@ -90,13 +90,12 @@ class Camera:
     
     def update(self, source_rect):
         """
-        Updates camera to follow source_rect 
+        Updates camera to follow source_rect.
         """
         x = - source_rect.center[0] + 320 // 2
         y = - source_rect.center[1] + 240 // 2
         position = pg.Vector2(self.state.topleft)
-        position += (pg.Vector2((x, y)) 
-                           - pg.Vector2(self.state.topleft))
+        position += (pg.Vector2((x, y)) - position)
         self.state.topleft = (int(position.x), int(position.y))
         self.state.x = max(-(self.state.width - 320), min(0, self.state.x))
         self.state.y = max(-(self.state.height - 240), min(0, self.state.y))

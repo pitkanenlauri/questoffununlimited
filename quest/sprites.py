@@ -37,7 +37,6 @@ class Sprite(pg.sprite.Sprite):
     
     def update(self, dt):
         self.dt = dt
-        
         action_function = self.action_dict[self.action]
         action_function()
     
@@ -125,7 +124,7 @@ class Player(Sprite):
             elif self.keys[pg.K_RIGHT]:
                 self.begin_moving('right')
     
-class Square(Sprite):
+class Wanderer(Sprite):
     def __init__(self, name, x, y):
         super().__init__(name, x, y)
         self.moves = ['up', 'down', 'left', 'right']

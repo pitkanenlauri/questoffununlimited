@@ -1,9 +1,7 @@
 # Constants used throughout the game.
 
 CAPTION = "Quest"
-WIDTH = 640
-HEIGHT = 480
-WINDOW_SIZE = (WIDTH, HEIGHT)
+WINDOW_SIZE = (640, 480)
 FPS = 60
 TILE_WIDTH = 16
 
