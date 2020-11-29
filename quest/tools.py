@@ -1,4 +1,7 @@
 import pygame as pg
+import os
+
+import constants as c
 
 class GameStatesManager:
     """
@@ -71,6 +74,19 @@ def create_game_data_dict():
     }
     return data_dict
 
+def load_all_gfx(directory, colorkey=c.WHITE, accept='.png'):
+    graphics = {}
+    for pic in os.listdir(directory):
+        name, ext = os.path.splitext(pic)
+        if ext.lower() in accept:
+            img = pg.image.load(os.path.join(directory, pic))
+            if img.get_alpha():
+                img = img.convert_alpha()
+            else:
+                img = img.convert()
+                img.set_colorkey(colorkey)
+            graphics[name] = img
+    return graphics
 
 class Camera:
     """
@@ -99,3 +115,4 @@ class Camera:
         self.state.topleft = (int(position.x), int(position.y))
         self.state.x = max(-(self.state.width - 320), min(0, self.state.x))
         self.state.y = max(-(self.state.height - 240), min(0, self.state.y))
+

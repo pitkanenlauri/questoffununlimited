@@ -1,7 +1,7 @@
 import pygame as pg
-import os
 import sys
 
+import setup
 import constants as c
 import tools
 import states
@@ -15,6 +15,8 @@ def main():
     gm.setup(state_dict, c.SANDY_COVE)
     gm.state.start_up(game_data)
     
+    clock = pg.time.Clock()
+    
     while True:
         dt = clock.tick(c.FPS) / 32
         for event in pg.event.get():
@@ -23,7 +25,7 @@ def main():
                 return
         keys = pg.key.get_pressed()
         # Update game state through GameStateManager.
-        gm.update(window, keys, dt)
+        gm.update(setup.window, keys, dt)
         
         # Show fps in caption.
         fps = clock.get_fps()
@@ -32,13 +34,6 @@ def main():
         
         
 if __name__ == '__main__':
-    pg.init()
-    # Center game window.
-    os.environ['SDL_VIDEO_CENTERED'] = 'TRUE'
-    pg.display.set_caption(c.CAPTION)
-    window = pg.display.set_mode(c.WINDOW_SIZE)
-    clock = pg.time.Clock()
-    
     main()
     pg.quit()
     sys.exit()

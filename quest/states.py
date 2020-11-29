@@ -11,7 +11,7 @@ class MapState(State):
     def __init__(self, name):
         super().__init__()
         self.name = name
-        self.camera = Camera(640, 480) # 640 480 = test grid.png dimensions
+        self.camera = Camera(640, 480) # Change to map width and height
         
         # Test
         self.all_sprites = pg.sprite.Group()
@@ -20,28 +20,25 @@ class MapState(State):
         self.player = Player(16, 16, 'resting', 'down')
         self.all_sprites.add(self.player)
         
-        self.square = Wanderer('square', 160, 96)
+        self.square = Wanderer('pink', 160, 96)
         self.all_sprites.add(self.square)
         
         for i in range(10):
-            obstacle = Sprite('obstacle_blue', 80 + i*16, 80)
+            obstacle = Sprite('red', 80 + i*16, 80)
             self.obstacles.add(obstacle)
             self.all_sprites.add(obstacle)
         
         for i in range(5):
-            obstacle = Sprite('obstacle_green', 80 + i*16, 112)
+            obstacle = Sprite('green', 80 + i*16, 112)
             self.obstacles.add(obstacle)
             self.all_sprites.add(obstacle)
 
         for i in range(5):
-            obstacle = Sprite('obstacle_yellow', 176, 96 + i*16)
+            obstacle = Sprite('blue', 176, 96 + i*16)
             self.obstacles.add(obstacle)
             self.all_sprites.add(obstacle)
         
-        self.grid = pg.sprite.Sprite()
-        self.grid.image = pg.image.load('grid.png').convert_alpha()
-        self.grid.rect = self.grid.image.get_rect(left=0, top=0)
-    
+
     def update(self, window, keys, dt):
         
         # Test
@@ -57,8 +54,7 @@ class MapState(State):
         
         self.camera.update(self.player.rect)
         
-        window.fill((0, 0, 0))
-        window.blit(self.grid.image, self.camera.apply(self.grid))
+        window.fill((135, 206, 235))
         
         for sprite in self.all_sprites:
             window.blit(sprite.image, self.camera.apply(sprite))

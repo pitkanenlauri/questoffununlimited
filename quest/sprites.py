@@ -2,28 +2,80 @@ import pygame as pg
 import random
 
 import constants as c
+from setup import GFX
 
 class Sprite(pg.sprite.Sprite):
-    def __init__(self, name, x, y, action='resting', direction='down'):
+    def __init__(self, sheet_key, x, y, action='resting', direction='down'):
         super().__init__()
-        self.name = name
+        self.name = sheet_key
         self.action = action
         self.direction = direction
+        
+        self.spritesheet_dict = self.create_spritesheet_dict(sheet_key)
+        self.animation_dict = self.create_animation_dict()
+        self.image_list = self.animation_dict[self.direction]
+        
+        self.image = self.image_list[0]
+        self.rect = self.image.get_rect(left=x, top=y)
+        
         self.speed = 1
         self.distance = 0
         self.pixels_moved = 0
         
         self.action_dict = self.create_action_dict()
         self.vector_dict = self.create_vector_dict()
+    
+    def create_spritesheet_dict(self, sheet_key):
+        """
+        Makes a dictionary of images from sprite sheet.
+        """
+        image_list = []
+        image_dict = {}
+        sheet = GFX[sheet_key]
+        tw = c.TILE_WIDTH
         
-        # Test
-        self.image = pg.image.load(self.name + '.png').convert_alpha()
-        self.rect = self.image.get_rect(left=x, top=y)
+        # u = up, d = down, l = left, r = right
+        image_keys = ['u0', 'u1', 'u2', 'u3',
+                      'd0', 'd1', 'd2', 'd3',
+                      'l0', 'l1', 'l2', 'l3',
+                      'r0', 'r1', 'r2', 'r3']
+
+        for row in range(4):
+            for column in range(4):
+                image = pg.Surface([tw, tw])
+                image.blit(sheet, (0, 0), (column*tw, row*tw, tw, tw))
+                image.set_colorkey(c.WHITE)
+                image_list.append(image)
+                
+
+        for key, image in zip(image_keys, image_list):
+            image_dict[key] = image
+        
+        return image_dict    
+    
+    def create_animation_dict(self):
+        """
+        Returns a dictionary of image lists for animation.
+        """
+        d = self.spritesheet_dict
+        
+        up_list     = [d['u0'], d['u1'], d['u2'], d['u3']]
+        down_list   = [d['d0'], d['d1'], d['d2'], d['d3']]
+        left_list   = [d['l0'], d['l1'], d['l2'], d['l3']]
+        right_list  = [d['r0'], d['r1'], d['r2'], d['r3']]
+
+
+        direction_dict = {'up': up_list,
+                          'down': down_list,
+                          'left': left_list,
+                          'right': right_list}
+
+        return direction_dict
     
     def create_action_dict(self):
         action_dict = {'resting': self.resting,
-                      'moving':  self.moving,
-                      'auto_moving': self.auto_moving
+                       'moving':  self.moving,
+                       'auto_moving': self.auto_moving
         }
         return action_dict
     
