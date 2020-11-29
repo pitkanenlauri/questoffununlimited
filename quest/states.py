@@ -20,7 +20,7 @@ class MapState(State):
         self.player = Player(16, 16, 'resting', 'down')
         self.all_sprites.add(self.player)
         
-        self.square = Wanderer('pink', 160, 96)
+        self.square = Wanderer('player', 160, 96)
         self.all_sprites.add(self.square)
         
         for i in range(10):

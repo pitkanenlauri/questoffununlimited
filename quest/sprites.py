@@ -10,11 +10,13 @@ class Sprite(pg.sprite.Sprite):
         self.name = sheet_key
         self.action = action
         self.direction = direction
-        
+
+        self.action_dict = self.create_action_dict()
+        self.vector_dict = self.create_vector_dict()
         self.spritesheet_dict = self.create_spritesheet_dict(sheet_key)
         self.animation_dict = self.create_animation_dict()
-        self.image_list = self.animation_dict[self.direction]
         
+        self.image_list = self.animation_dict[self.direction]
         self.image = self.image_list[0]
         self.rect = self.image.get_rect(left=x, top=y)
         
@@ -22,8 +24,7 @@ class Sprite(pg.sprite.Sprite):
         self.distance = 0
         self.pixels_moved = 0
         
-        self.action_dict = self.create_action_dict()
-        self.vector_dict = self.create_vector_dict()
+
     
     def create_spritesheet_dict(self, sheet_key):
         """
@@ -99,6 +100,9 @@ class Sprite(pg.sprite.Sprite):
         """
         Moves sprite from one tile to the next based on direction.
         """
+        # Animate movement.
+        self.image = self.image_list[self.pixels_moved // (c.TILE_WIDTH // 4)]
+        
         # Calculate the change in distance based on speed. (s = s_0 + vt)
         self.distance += self.speed * self.dt
         
@@ -124,11 +128,13 @@ class Sprite(pg.sprite.Sprite):
         self.action = 'resting'
         self.distance = 0
         self.pixels_moved = 0
-        self.correct_position()    
+        self.correct_position()
+        self.image = self.image_list[0]
     
     def begin_moving(self, direction):
         self.action = 'moving'
         self.direction = direction
+        self.image_list = self.animation_dict[self.direction]
     
     def auto_moving(self):
         pass
@@ -156,7 +162,7 @@ class Sprite(pg.sprite.Sprite):
 class Player(Sprite):
     def __init__(self, x, y, action, direction):
         super().__init__('player', x, y, action, direction)
-        self.speed = 2
+        self.speed = 1
     
     def update(self, keys, dt):
         self.keys = keys
