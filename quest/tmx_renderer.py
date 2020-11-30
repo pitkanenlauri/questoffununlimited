@@ -36,3 +36,9 @@ class Renderer:
         # Iterate over the tiles in the layer, and blit them.
         for x, y, image in layer.tiles():
             surface_blit(image, (x * tw, y * th))
+    
+    def get_layer(self, layer_name):
+        layer = self.tmx_data.get_layer_by_name(layer_name)
+        return layer
+    
+    

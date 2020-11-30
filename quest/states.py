@@ -1,5 +1,6 @@
 import pygame as pg
 
+import constants as c
 from sprites import Player, Wanderer
 from tools import State, Camera
 from setup import TMX
@@ -14,11 +15,6 @@ class MapState(State):
         super().__init__()
         self.name = name
         self.tmx_map = TMX[name]
-        
-        # Test
-        self.all_sprites = pg.sprite.Group()
-        self.square = Wanderer('player', 22*16, 13*16)
-        self.all_sprites.add(self.square)
     
     def start_up(self, game_data):
         self.game_data = game_data
@@ -32,22 +28,40 @@ class MapState(State):
         
         self.map_state = self.make_map_state_dict()
 
-        # Test
         self.player = self.make_player()
+        self.sprites = self.make_sprites()
+        self.blockers = self.make_blockers()
     
     def make_player(self):
-        layer = self.tmx_renderer.tmx_data.get_layer_by_name('Object_Layer_1')
+        layer = self.tmx_renderer.get_layer('sprite_info')
         for obj in layer:
             if obj.name == "start point":
-                player = Player(obj.x, obj.y, 'resting', obj.properties['direction'])
+                player = Player(
+                    obj.x, obj.y, 'resting', obj.properties['direction'])
 
         return player
     
     def make_sprites(self):
-        pass
+        sprites = pg.sprite.Group()
+        
+        layer = self.tmx_renderer.get_layer('sprite_info')
+        for obj in layer:
+            if obj.name == "sprite":
+                sprite = Wanderer(
+                    'player', obj.x, obj.y, obj.properties['direction'])
+                sprites.add(sprite)
+        
+        return sprites
     
     def make_blockers(self):
-        pass
+        blockers = []
+        
+        layer = self.tmx_renderer.get_layer('blockers')
+        for obj in layer:
+            blocker = pg.Rect(obj.x, obj.y, c.TILE_WIDTH, c.TILE_WIDTH)
+            blockers.append(blocker)
+        
+        return blockers
     
     def make_map_state_dict(self):
         map_state_dict = {'normal': self.running_normally
@@ -60,7 +74,8 @@ class MapState(State):
     
     def running_normally(self, window, keys, dt):
         self.player.update(keys, dt)
-        self.square.update(dt)        
+        self.sprites.update(dt)      
+        self.handle_collisions()  
         self.camera.update(self.player.rect)
         self.update_window(window)
 
@@ -68,12 +83,45 @@ class MapState(State):
         window.blit(self.map_image, self.camera.apply(self.map_rect))
         window.blit(self.player.image, self.camera.apply(self.player.rect))
         
-        for sprite in self.all_sprites:
+        for sprite in self.sprites:
             window.blit(sprite.image, self.camera.apply(sprite.rect))
         
         new = pg.transform.scale2x(window)
         window.blit(new, (0, 0))
         
         pg.display.flip()
-        
     
+    def handle_collisions(self):
+        player_collided = False
+        collided_sprites = []
+        all_sprite_blockers = []
+        
+        for sprite in self.sprites:
+            all_sprite_blockers.extend(sprite.blockers)
+        
+        for blocker in self.blockers:
+            if self.player.rect.colliderect(blocker):
+                player_collided = True
+        
+        for blocker in all_sprite_blockers:
+            if self.player.rect.colliderect(blocker):
+                player_collided = True
+        
+        if player_collided:
+            self.player.begin_resting()
+        
+        for sprite in self.sprites:
+            for blocker in self.blockers:
+                if sprite.rect.colliderect(blocker):
+                    collided_sprites.append(sprite)
+            if sprite.rect.colliderect(self.player.rect):
+                collided_sprites.append(sprite)
+            sprite.kill()
+            if pg.sprite.spritecollideany(sprite, self.sprites):
+                collided_sprites.append(sprite)
+            self.sprites.add(sprite)
+        
+        for sprite in collided_sprites:
+            sprite.begin_resting()
+        
+        

@@ -23,7 +23,8 @@ class Sprite(pg.sprite.Sprite):
         self.speed = 1
         self.distance = 0
         self.pixels_moved = 0
-        
+
+        self.blockers = self.set_blockers()
         
     def create_spritesheet_dict(self, sheet_key):
         """
@@ -44,7 +45,7 @@ class Sprite(pg.sprite.Sprite):
             for column in range(4):
                 image = pg.Surface([tw, tw])
                 image.blit(sheet, (0, 0), (column*tw, row*tw, tw, tw))
-                image.set_colorkey(c.WHITE)
+                image.set_colorkey(c.COLORKEY)
                 image_list.append(image)
                 
 
@@ -88,6 +89,7 @@ class Sprite(pg.sprite.Sprite):
         return vector_dict
     
     def update(self, dt):
+        self.blockers = self.set_blockers()
         self.dt = dt
         action_function = self.action_dict[self.action]
         action_function()
@@ -142,28 +144,60 @@ class Sprite(pg.sprite.Sprite):
         """
         Adjusts sprites position to be centered on a tile.
         """
-        x_off = self.rect.x % c.TILE_WIDTH
-        y_off = self.rect.y % c.TILE_WIDTH
+        tw = c.TILE_WIDTH
+        x_off = self.rect.x % tw
+        y_off = self.rect.y % tw
         
         if x_off != 0:
-            if x_off <= c.TILE_WIDTH / 2:
+            if x_off <= tw / 2:
                 self.rect.x -= x_off
             else:
-                self.rect.x += (c.TILE_WIDTH - x_off)
+                self.rect.x += (tw - x_off)
         
         if y_off != 0:
-            if y_off <= c.TILE_WIDTH / 2:
+            if y_off <= tw / 2:
                 self.rect.y -= y_off
             else:
-                self.rect.y += (c.TILE_WIDTH - y_off)
+                self.rect.y += (tw - y_off)
     
+    def set_blockers(self):
+        """
+        Create blocker rects to prevent collision with other sprites.
+        If sprite is resting, blocker is sprite.rect.
+        If sprite is moving, blockers are the source and
+        the destination tile sprite is moving in between.
+        """
+        blockers = []
+        
+        tw = c.TILE_WIDTH
+        x = self.rect.x
+        y = self.rect.y
+        
+        if self.pixels_moved == 0:
+            blockers.append(pg.Rect(self.rect.topleft, (tw, tw)))
+        else:
+            if self.rect.x % tw != 0:
+                tile1 = ( (x // tw) * tw , y)
+                tile2 = ( ((x + tw) // tw ) * tw , y)
+                tile1_rect = pg.Rect(tile1, (tw, tw))
+                tile2_rect = pg.Rect(tile2, (tw, tw))
+                blockers.extend([tile1_rect, tile2_rect])
+            elif self.rect.y & tw:
+                tile1 = ( x, (y // tw) * tw )
+                tile2 = ( x, ((y + tw) // tw ) * tw)
+                tile1_rect = pg.Rect(tile1, (tw, tw))
+                tile2_rect = pg.Rect(tile2, (tw, tw))
+                blockers.extend([tile1_rect, tile2_rect])
 
+        return blockers
+                
 class Player(Sprite):
     def __init__(self, x, y, action, direction):
         super().__init__('player', x, y, action, direction)
         self.speed = 1
     
     def update(self, keys, dt):
+        self.blockers = self.set_blockers()
         self.keys = keys
         self.check_for_input()
         self.dt = dt
@@ -182,8 +216,8 @@ class Player(Sprite):
                 self.begin_moving('right')
     
 class Wanderer(Sprite):
-    def __init__(self, name, x, y):
-        super().__init__(name, x, y)
+    def __init__(self, name, x, y, direction):
+        super().__init__(name, x, y, direction=direction)
         self.moves = ['up', 'down', 'left', 'right']
         self.speed = 0.5
     
@@ -191,6 +225,7 @@ class Wanderer(Sprite):
         self.begin_moving(self.moves[random.randint(0, 3)])
     
     def update(self, dt):
+        self.blockers = self.set_blockers()
         self.dt = dt
         if self.action == 'resting':
             self.auto_moving()
