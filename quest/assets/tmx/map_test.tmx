@@ -114,7 +114,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="5" name="Object_Layer_1" visible="0">
+ <objectgroup id="5" name="Object_Layer_1">
   <object id="52" name="blocker" gid="2711" x="224" y="144" width="16" height="16"/>
   <object id="53" name="blocker" gid="2711" x="208" y="144" width="16" height="16"/>
   <object id="65" name="blocker" gid="2711" x="192" y="160" width="16" height="16"/>
