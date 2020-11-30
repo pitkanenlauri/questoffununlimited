@@ -12,3 +12,4 @@ pg.display.set_caption(c.CAPTION)
 window = pg.display.set_mode(c.WINDOW_SIZE)
 
 GFX = tools.load_all_gfx(os.path.join('assets', 'graphics'))
+TMX = tools.load_all_tmx(os.path.join('assets', 'tmx'))

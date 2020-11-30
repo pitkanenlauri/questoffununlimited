@@ -74,7 +74,7 @@ def create_game_data_dict():
     }
     return data_dict
 
-def load_all_gfx(directory, colorkey=c.WHITE, accept='.png'):
+def load_all_gfx(directory, colorkey=c.WHITE, accept=('.png')):
     graphics = {}
     for pic in os.listdir(directory):
         name, ext = os.path.splitext(pic)
@@ -88,6 +88,15 @@ def load_all_gfx(directory, colorkey=c.WHITE, accept='.png'):
             graphics[name] = img
     return graphics
 
+def load_all_tmx(directory, accept=('.tmx')):
+    tmx = {}
+    for file in os.listdir(directory):
+        name, ext = os.path.splitext(file)
+        if ext.lower() in accept:
+            tmx[name] = os.path.join(directory, file)
+    return tmx
+
+
 class Camera:
     """
     Class to handle world scrolling. Applying moves target rect position so 
@@ -98,11 +107,11 @@ class Camera:
     def __init__(self, map_width, map_height):
         self.state = pg.Rect(0, 0, map_width, map_height)
     
-    def apply(self, target):
+    def apply(self, target_rect):
         """
-        Offsets target sprite position according to camera state.
+        Offsets target rects position according to camera state.
         """
-        return target.rect.move(self.state.topleft)
+        return target_rect.move(self.state.topleft)
     
     def update(self, source_rect):
         """

@@ -24,8 +24,7 @@ class Sprite(pg.sprite.Sprite):
         self.distance = 0
         self.pixels_moved = 0
         
-
-    
+        
     def create_spritesheet_dict(self, sheet_key):
         """
         Makes a dictionary of images from sprite sheet.

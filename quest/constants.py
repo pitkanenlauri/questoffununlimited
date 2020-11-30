@@ -9,4 +9,4 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 # Game states
-SANDY_COVE = 'sandy cove'
+SANDY_COVE = 'map_test'

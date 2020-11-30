@@ -1,7 +1,9 @@
 import pygame as pg
 
-from sprites import Player, Sprite, Wanderer
+from sprites import Player, Wanderer
 from tools import State, Camera
+from setup import TMX
+from tmx_renderer import TiledRenderer
 
 class MapState(State):
     """
@@ -11,53 +13,36 @@ class MapState(State):
     def __init__(self, name):
         super().__init__()
         self.name = name
-        self.camera = Camera(640, 480) # Change to map width and height
+        self.tmx_map = TMX[name]
+        
+        # Make these in start_up()
+        self.tmx_renderer = TiledRenderer(self.tmx_map)
+        self.map_image = self.tmx_renderer.render_map()
+        self.map_rect = self.map_image.get_rect()
+        
+        self.camera = Camera(self.map_rect.width, self.map_rect.height)
         
         # Test
         self.all_sprites = pg.sprite.Group()
-        self.obstacles = pg.sprite.Group()
         
         self.player = Player(16, 16, 'resting', 'down')
         self.all_sprites.add(self.player)
         
         self.square = Wanderer('player', 160, 96)
         self.all_sprites.add(self.square)
-        
-        for i in range(10):
-            obstacle = Sprite('red', 80 + i*16, 80)
-            self.obstacles.add(obstacle)
-            self.all_sprites.add(obstacle)
-        
-        for i in range(5):
-            obstacle = Sprite('green', 80 + i*16, 112)
-            self.obstacles.add(obstacle)
-            self.all_sprites.add(obstacle)
-
-        for i in range(5):
-            obstacle = Sprite('blue', 176, 96 + i*16)
-            self.obstacles.add(obstacle)
-            self.all_sprites.add(obstacle)
-        
 
     def update(self, window, keys, dt):
         
         # Test
         self.player.update(keys, dt)
         self.square.update(dt)
-        self.obstacles.update(dt)
-        
-        if pg.sprite.spritecollideany(self.player, self.obstacles):
-            self.player.begin_resting()
-        
-        if pg.sprite.spritecollideany(self.square, self.obstacles):
-            self.square.begin_resting()
         
         self.camera.update(self.player.rect)
         
-        window.fill((135, 206, 235))
+        window.blit(self.map_image, self.camera.apply(self.map_rect))
         
         for sprite in self.all_sprites:
-            window.blit(sprite.image, self.camera.apply(sprite))
+            window.blit(sprite.image, self.camera.apply(sprite.rect))
         
         new = pg.transform.scale2x(window)
         window.blit(new, (0, 0))
