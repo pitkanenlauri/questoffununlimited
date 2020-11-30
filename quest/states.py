@@ -3,7 +3,7 @@ import pygame as pg
 from sprites import Player, Wanderer
 from tools import State, Camera
 from setup import TMX
-from tmx_renderer import TiledRenderer
+from tmx_renderer import Renderer
 
 class MapState(State):
     """
@@ -16,7 +16,7 @@ class MapState(State):
         self.tmx_map = TMX[name]
         
         # Make these in start_up()
-        self.tmx_renderer = TiledRenderer(self.tmx_map)
+        self.tmx_renderer = Renderer(self.tmx_map)
         self.map_image = self.tmx_renderer.render_map()
         self.map_rect = self.map_image.get_rect()
         
@@ -25,10 +25,10 @@ class MapState(State):
         # Test
         self.all_sprites = pg.sprite.Group()
         
-        self.player = Player(16, 16, 'resting', 'down')
+        self.player = Player(13*16, 9*16, 'resting', 'down')
         self.all_sprites.add(self.player)
         
-        self.square = Wanderer('player', 160, 96)
+        self.square = Wanderer('player', 22*16, 13*16)
         self.all_sprites.add(self.square)
 
     def update(self, window, keys, dt):
@@ -46,5 +46,6 @@ class MapState(State):
         
         new = pg.transform.scale2x(window)
         window.blit(new, (0, 0))
+
         pg.display.flip()
         

@@ -99,10 +99,10 @@ class Sprite(pg.sprite.Sprite):
         """
         Moves sprite from one tile to the next based on direction.
         """
-        # Animate movement.
+        # Change self.image to animate movement based on steps between tiles.
         self.image = self.image_list[self.pixels_moved // (c.TILE_WIDTH // 4)]
         
-        # Calculate the change in distance based on speed. (s = s_0 + vt)
+        # Calculate the change in distance based on speed. (s = s_0 + v*t)
         self.distance += self.speed * self.dt
         
         # Distance moved is stored in self.distance, but game movement happens 
@@ -110,18 +110,21 @@ class Sprite(pg.sprite.Sprite):
         if self.distance >= 1:
             pixels_to_move = int(round(self.distance))
             
-            # move_ip moves rect by given x and y offset to self.direction
+            # move_ip moves rect by given x and y offset to self.direction.
             self.rect.move_ip(
                 self.vector_dict[self.direction][0] * pixels_to_move,
                 self.vector_dict[self.direction][1] * pixels_to_move)
             
             self.pixels_moved += pixels_to_move
-            self.distance = 0.0
+            self.distance = 0
             
             # Move one tile at a time.
             if self.pixels_moved >= c.TILE_WIDTH:
                 self.begin_resting()
                 self.pixels_moved = 0
+
+    def auto_moving(self):
+        pass
     
     def begin_resting(self):
         self.action = 'resting'
@@ -134,9 +137,6 @@ class Sprite(pg.sprite.Sprite):
         self.action = 'moving'
         self.direction = direction
         self.image_list = self.animation_dict[self.direction]
-    
-    def auto_moving(self):
-        pass
     
     def correct_position(self):
         """

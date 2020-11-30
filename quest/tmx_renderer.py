@@ -2,7 +2,7 @@ import pygame as pg
 
 import pytmx
 
-class TiledRenderer:
+class Renderer:
     """
     Renders tile map made in Tiled to pygame surface using pytmx library.
     """
