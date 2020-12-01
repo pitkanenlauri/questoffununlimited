@@ -1,7 +1,7 @@
 import pygame as pg
 
 import constants as c
-from sprites import Player, Wanderer
+from sprites import Player, Wanderer, Mover
 from tools import State, Camera
 from setup import TMX
 from tmx_renderer import Renderer
@@ -33,9 +33,9 @@ class MapState(State):
         self.blockers = self.make_blockers()
     
     def make_player(self):
-        layer = self.tmx_renderer.get_layer('sprite_info')
+        layer = self.tmx_renderer.get_layer('start_points')
         for obj in layer:
-            if obj.name == "start point":
+            if obj.name == "start":
                 player = Player(
                     obj.x, obj.y, 'resting', obj.properties['direction'])
 
@@ -44,11 +44,15 @@ class MapState(State):
     def make_sprites(self):
         sprites = pg.sprite.Group()
         
-        layer = self.tmx_renderer.get_layer('sprite_info')
+        layer = self.tmx_renderer.get_layer('sprites')
         for obj in layer:
-            if obj.name == "sprite":
+            if obj.name == "wanderer":
                 sprite = Wanderer(
                     'player', obj.x, obj.y, obj.properties['direction'])
+                sprites.add(sprite)
+            
+            if obj.name == 'mover':
+                sprite = Mover('player', obj.x, obj.y)
                 sprites.add(sprite)
         
         return sprites

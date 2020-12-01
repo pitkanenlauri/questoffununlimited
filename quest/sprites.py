@@ -231,4 +231,26 @@ class Wanderer(Sprite):
             self.auto_moving()
         action_function = self.action_dict[self.action]
         action_function()
+
+class Mover(Sprite):
+    def __init__(self, name, x, y):
+        super().__init__(name, x, y)
+        self.moves = ['right', 'right', 'right', 'down', 'down',
+                      'left', 'left', 'left', 'up', 'up']
+        self.index = 0
+        self.speed = 0.5
+    
+    def auto_moving(self):
+        if self.index > 9:
+            self.index = 0
+        self.begin_moving(self.moves[self.index])
+        self.index += 1
+            
+    def update(self, dt):
+        self.blockers = self.set_blockers()
+        self.dt = dt
+        if self.action == 'resting':
+            self.auto_moving()
+        action_function = self.action_dict[self.action]
+        action_function()
     

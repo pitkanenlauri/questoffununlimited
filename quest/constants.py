@@ -8,4 +8,4 @@ TILE_WIDTH = 16
 COLORKEY = (255, 255, 255)
 
 # Game states
-SANDY_COVE = 'map_test'
+SANDY_COVE = 'sandy_cove'
