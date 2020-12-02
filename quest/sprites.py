@@ -54,11 +54,12 @@ class Sprite(pg.sprite.Sprite):
         
         return image_dict    
     
-    def create_animation_dict(self):
+    def create_animation_dict(self, d = None):
         """
         Returns a dictionary of image lists for animation.
         """
-        d = self.spritesheet_dict
+        if d is None:
+            d = self.spritesheet_dict
         
         up_list     = [d['u0'], d['u1'], d['u2'], d['u3']]
         down_list   = [d['d0'], d['d1'], d['d2'], d['d3']]
@@ -253,4 +254,38 @@ class Mover(Sprite):
             self.auto_moving()
         action_function = self.action_dict[self.action]
         action_function()
+        
+class Chicken(Sprite):
+    def __init__(self, x, y, direction):
+        super().__init__('chicken_move', x, y, direction=direction)
+        self.speed = 0.5
+        self.moves = ['up', 'down', 'left', 'right']
+        self.rest_sheet_dict = self.create_spritesheet_dict('chicken_rest')
+        self.rest_animation_dict = self.create_animation_dict(
+            self.rest_sheet_dict)
+        self.rested = False
+        self.rest_counter = 0
+
+    def auto_moving(self):
+        self.begin_moving(self.moves[random.randint(0, 3)])
+
+    def resting(self):
+        self.correct_position()
+        self.image_list = self.rest_animation_dict[self.direction]
+        if self.rest_counter > 63:
+            self.rest_counter = 0
+            self.rested = True
+        self.image = self.image_list[self.rest_counter // 16]
+        self.rest_counter += 1
+        
+    def update(self, dt):
+        self.blockers = self.set_blockers()
+        self.dt = dt
+        if (self.action == 'resting' and random.random() > 0.9916
+            and self.rested):
+            self.auto_moving()
+            self.rested = False
+        action_function = self.action_dict[self.action]
+        action_function()
+        
     

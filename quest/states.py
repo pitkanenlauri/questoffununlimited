@@ -1,7 +1,7 @@
 import pygame as pg
 
 import constants as c
-from sprites import Player, Wanderer, Mover
+from sprites import Player, Wanderer, Mover, Chicken
 from tools import State, Camera
 from setup import TMX
 from tmx_renderer import Renderer
@@ -48,11 +48,15 @@ class MapState(State):
         for obj in layer:
             if obj.name == "wanderer":
                 sprite = Wanderer(
-                    'player', obj.x, obj.y, obj.properties['direction'])
+                    'uncle', obj.x, obj.y, obj.properties['direction'])
                 sprites.add(sprite)
             
             if obj.name == 'mover':
-                sprite = Mover('player', obj.x, obj.y)
+                sprite = Mover('uncle', obj.x, obj.y)
+                sprites.add(sprite)
+
+            if obj.name == 'chicken':
+                sprite = Chicken(obj.x, obj.y, obj.properties['direction'])
                 sprites.add(sprite)
         
         return sprites
