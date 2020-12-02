@@ -48,7 +48,7 @@ class MapState(State):
         for obj in layer:
             if obj.name == "wanderer":
                 sprite = Wanderer(
-                    'uncle', obj.x, obj.y, obj.properties['direction'])
+                    'player_f', obj.x, obj.y, obj.properties['direction'])
                 sprites.add(sprite)
             
             if obj.name == 'mover':
