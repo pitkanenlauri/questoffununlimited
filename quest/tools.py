@@ -32,14 +32,14 @@ class GameStatesManager:
         
     def flip_state(self):
         """
-        Changes to a new state and performs cleanup for exiting state 
-        and startup for new state. (Most importantly passing on game data.)
+        Changes to a new state and performs clean_up for exiting state 
+        and start_up for new state. (Most importantly passing on game data.)
         """
         previous, self.state_name = self.state_name, self.state.next
-        game_data = self.state.cleanup()
+        game_data = self.state.clean_up()
         self.state = self.state_dict[self.state_name]
-        self.state.startup(game_data)
         self.state.previous = previous
+        self.state.start_up(game_data)
         
 class State:
     """
@@ -54,7 +54,7 @@ class State:
     def start_up(self, game_data):
         self.game_data = game_data
     
-    def cleanup(self):
+    def clean_up(self):
         self.done = False
         return self.game_data
     
@@ -124,4 +124,14 @@ class Camera:
         self.state.topleft = (int(position.x), int(position.y))
         self.state.x = max(-(self.state.width - 320), min(0, self.state.x))
         self.state.y = max(-(self.state.height - 240), min(0, self.state.y))
+
+
+class Portal:
+    '''
+    Used for storing the transportation points between maps.
+    '''
+    def __init__(self, name, x, y):
+        self.name = name
+        self.rect = pg.Rect(x, y, c.TILE_WIDTH, c.TILE_WIDTH)
+    
 

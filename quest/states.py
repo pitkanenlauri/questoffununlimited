@@ -2,7 +2,7 @@ import pygame as pg
 
 import constants as c
 from sprites import Player, Wanderer, Mover, Chicken
-from tools import State, Camera
+from tools import State, Camera, Portal
 from setup import TMX
 from tmx_renderer import Renderer
 
@@ -31,13 +31,18 @@ class MapState(State):
         self.player = self.make_player()
         self.sprites = self.make_sprites()
         self.blockers = self.make_blockers()
+        self.portals = self.open_portals()
     
     def make_player(self):
         layer = self.tmx_renderer.get_layer('start_points')
         for obj in layer:
-            if obj.name == "start":
+            if obj.name == self.previous:
                 player = Player(
-                    obj.x, obj.y, 'resting', obj.properties['direction'])
+                    obj.x, obj.y, obj.properties['direction'], 'resting')
+            
+            if obj.name == 'start':
+                player = Player(
+                    obj.x, obj.y, obj.properties['direction'], 'resting')
 
         return player
     
@@ -71,6 +76,22 @@ class MapState(State):
         
         return blockers
     
+    def open_portals(self):
+        portals = []
+        
+        layer = self.tmx_renderer.get_layer('portals')
+        for obj in layer:
+            portal = Portal(obj.name, obj.x, obj.y)
+            portals.append(portal)
+        
+        return portals
+    
+    def check_for_portals(self):
+        for portal in self.portals:
+            if self.player.rect.colliderect(portal.rect):
+                self.next = portal.name
+                self.done = True
+    
     def make_map_state_dict(self):
         map_state_dict = {'normal': self.running_normally
         }
@@ -86,6 +107,7 @@ class MapState(State):
         self.handle_collisions()  
         self.camera.update(self.player.rect)
         self.update_window(window)
+        self.check_for_portals()
 
     def update_window(self, window):
         window.blit(self.map_image, self.camera.apply(self.map_rect))

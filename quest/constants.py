@@ -1,11 +1,12 @@
 # Constants used throughout the game.
 
-CAPTION = "Quest"
+CAPTION = "Quest of Fun Unlimited"
 WINDOW_SIZE = (640, 480)
 FPS = 60
 TILE_WIDTH = 16
 
-COLORKEY = (255, 255, 255)
+COLORKEY = (255, 255, 255) # White
 
 # Game states
 SANDY_COVE = 'sandy_cove'
+MYSTERIOUS_CAVE = 'mysterious_cave'

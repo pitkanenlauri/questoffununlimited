@@ -5,12 +5,12 @@ import constants as c
 from setup import GFX
 
 class Sprite(pg.sprite.Sprite):
-    def __init__(self, sheet_key, x, y, action='resting', direction='down'):
+    def __init__(self, sheet_key, x, y, direction='down', action='resting'):
         super().__init__()
         self.name = sheet_key
-        self.action = action
         self.direction = direction
-
+        self.action = action
+        
         self.action_dict = self.create_action_dict()
         self.vector_dict = self.create_vector_dict()
         self.spritesheet_dict = self.create_spritesheet_dict(sheet_key)
@@ -48,7 +48,6 @@ class Sprite(pg.sprite.Sprite):
                 image.set_colorkey(c.COLORKEY)
                 image_list.append(image)
                 
-
         for key, image in zip(image_keys, image_list):
             image_dict[key] = image
         
@@ -65,7 +64,6 @@ class Sprite(pg.sprite.Sprite):
         down_list   = [d['d0'], d['d1'], d['d2'], d['d3']]
         left_list   = [d['l0'], d['l1'], d['l2'], d['l3']]
         right_list  = [d['r0'], d['r1'], d['r2'], d['r3']]
-
 
         direction_dict = {'up': up_list,
                           'down': down_list,
@@ -191,7 +189,8 @@ class Sprite(pg.sprite.Sprite):
                 blockers.extend([tile1_rect, tile2_rect])
 
         return blockers
-                
+
+
 class Player(Sprite):
     def __init__(self, x, y, action, direction):
         super().__init__('player', x, y, action, direction)
@@ -204,6 +203,11 @@ class Player(Sprite):
         self.dt = dt
         action_function = self.action_dict[self.action]
         action_function()
+        
+        if keys[pg.K_LSHIFT]:
+            self.speed = 3
+        elif keys[pg.K_LCTRL]:
+            self.speed = 1
     
     def check_for_input(self):
         if self.action == 'resting':
@@ -215,12 +219,13 @@ class Player(Sprite):
                 self.begin_moving('left')
             elif self.keys[pg.K_RIGHT]:
                 self.begin_moving('right')
-    
+
+
 class Wanderer(Sprite):
     def __init__(self, name, x, y, direction):
-        super().__init__(name, x, y, direction=direction)
-        self.moves = ['up', 'down', 'left', 'right']
+        super().__init__(name, x, y, direction)
         self.speed = 0.5
+        self.moves = ['up', 'down', 'left', 'right']
     
     def auto_moving(self):
         self.begin_moving(self.moves[random.randint(0, 3)])
@@ -228,19 +233,22 @@ class Wanderer(Sprite):
     def update(self, dt):
         self.blockers = self.set_blockers()
         self.dt = dt
+        
         if self.action == 'resting':
             self.auto_moving()
+            
         action_function = self.action_dict[self.action]
         action_function()
+
 
 class Mover(Sprite):
     def __init__(self, name, x, y):
         super().__init__(name, x, y)
+        self.speed = 0.5
         self.moves = ['right', 'right', 'right', 'down', 'down',
                       'left', 'left', 'left', 'up', 'up']
         self.index = 0
-        self.speed = 0.5
-    
+        
     def auto_moving(self):
         if self.index > 9:
             self.index = 0
@@ -254,10 +262,11 @@ class Mover(Sprite):
             self.auto_moving()
         action_function = self.action_dict[self.action]
         action_function()
-        
+
+
 class Chicken(Sprite):
     def __init__(self, x, y, direction):
-        super().__init__('chicken_move', x, y, direction=direction)
+        super().__init__('chicken_move', x, y, direction)
         self.speed = 0.5
         self.moves = ['up', 'down', 'left', 'right']
         self.rest_sheet_dict = self.create_spritesheet_dict('chicken_rest')
@@ -272,20 +281,23 @@ class Chicken(Sprite):
     def resting(self):
         self.correct_position()
         self.image_list = self.rest_animation_dict[self.direction]
+        
         if self.rest_counter > 63:
             self.rest_counter = 0
             self.rested = True
+        
         self.image = self.image_list[self.rest_counter // 16]
         self.rest_counter += 1
         
     def update(self, dt):
         self.blockers = self.set_blockers()
         self.dt = dt
+        
         if (self.action == 'resting' and random.random() > 0.9916
             and self.rested):
             self.auto_moving()
             self.rested = False
+            
         action_function = self.action_dict[self.action]
         action_function()
         
-    
