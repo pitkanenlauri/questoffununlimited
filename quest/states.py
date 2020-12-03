@@ -8,8 +8,8 @@ from tmx_renderer import Renderer
 
 class MapState(State):
     """
-    Main playing state. Handles player movement, sprite updates, 
-    resulting interaction and drawing of the map view.
+    Main playing state. Handles creation of map, sprites and objects from
+    tmx data, manages their interactions and draws & updates game window.
     """
     def __init__(self, name):
         super().__init__()
@@ -37,12 +37,10 @@ class MapState(State):
         layer = self.tmx_renderer.get_layer('start_points')
         for obj in layer:
             if obj.name == self.previous:
-                player = Player(
-                    obj.x, obj.y, obj.properties['direction'], 'resting')
+                player = Player(obj.x, obj.y, obj.properties['direction'])
             
             if obj.name == 'start':
-                player = Player(
-                    obj.x, obj.y, obj.properties['direction'], 'resting')
+                player = Player(obj.x, obj.y, obj.properties['direction'])
 
         return player
     

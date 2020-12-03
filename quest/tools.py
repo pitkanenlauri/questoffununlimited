@@ -60,7 +60,7 @@ class State:
     
     def update(self, window, keys, dt):
         """
-        Update function for state. Must be overloaded in children.
+        Update method for state. Must be overrided in children.
         """
         pass
     

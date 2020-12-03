@@ -5,6 +5,11 @@ import constants as c
 from setup import GFX
 
 class Sprite(pg.sprite.Sprite):
+    """
+    Base class for all game sprites. Can be used as is to create stationary 
+    sprites. Moving and animation included. 
+    Moving has to be initiated in children by overriding update method.
+    """
     def __init__(self, sheet_key, x, y, direction='down', action='resting'):
         super().__init__()
         self.name = sheet_key
@@ -161,7 +166,7 @@ class Sprite(pg.sprite.Sprite):
     
     def set_blockers(self):
         """
-        Create blocker rects to prevent collision with other sprites.
+        Creates blocker rects to prevent collision with other sprites.
         If sprite is resting, blocker is sprite.rect.
         If sprite is moving, blockers are the source and
         the destination tile sprite is moving in between.
@@ -192,8 +197,8 @@ class Sprite(pg.sprite.Sprite):
 
 
 class Player(Sprite):
-    def __init__(self, x, y, action, direction):
-        super().__init__('player', x, y, action, direction)
+    def __init__(self, x, y, direction):
+        super().__init__('player', x, y, direction)
         self.speed = 1
     
     def update(self, keys, dt):
@@ -227,15 +232,12 @@ class Wanderer(Sprite):
         self.speed = 0.5
         self.moves = ['up', 'down', 'left', 'right']
     
-    def auto_moving(self):
-        self.begin_moving(self.moves[random.randint(0, 3)])
-    
     def update(self, dt):
         self.blockers = self.set_blockers()
         self.dt = dt
         
         if self.action == 'resting':
-            self.auto_moving()
+            self.begin_moving(self.moves[random.randint(0, 3)])
             
         action_function = self.action_dict[self.action]
         action_function()
