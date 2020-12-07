@@ -295,11 +295,49 @@ class Chicken(Sprite):
         self.blockers = self.set_blockers()
         self.dt = dt
         
-        if (self.action == 'resting' and random.random() > 0.9916
+        # Probability of moving is 1/125 i.e. 48% per second with 60 FPS.
+        if (self.action == 'resting' and random.random() > 0.008
             and self.rested):
             self.auto_moving()
             self.rested = False
             
         action_function = self.action_dict[self.action]
         action_function()
+        
+class MapObject(pg.sprite.Sprite):
+    def __init__(self, sheet_key, x, y, frames, 
+                 frame_width=c.TILE_WIDTH, frame_height=c.TILE_WIDTH):
+        super().__init__()
+        self.image_list = self.create_image_list(
+            sheet_key, frames, frame_width, frame_height)
+        self.image = self.image_list[0]
+        self.rect = self.image.get_rect(left=x, top=y)
+        self.frames = frames
+        self.animation_speed = frames * c.ANIMATION_SPEED
+        self.counter = random.randint(0, self.animation_speed)
+        
+    def create_image_list(self, sheet_key, frames, frame_width, frame_height):
+        image_list = []
+        sheet = GFX[sheet_key]
+        fw = frame_width
+        fh = frame_height
+        
+        for i in range(frames):
+            image = pg.Surface([fw, fh])
+            image.blit(sheet, (0, 0), (i*fw, 0, fw, fh))
+            image.set_colorkey((0, 0, 0))
+            image_list.append(image)
+        
+        return image_list
+    
+    def update(self):
+        if self.counter > self.animation_speed - 1:
+            self.counter = 0
+        
+        image_number = self.counter // (self.animation_speed // self.frames)
+        self.image = self.image_list[image_number]
+        self.counter += 1
+        
+        
+        
         

@@ -127,9 +127,9 @@ class Camera:
 
 
 class Portal:
-    '''
+    """
     Used for storing the transportation points between maps.
-    '''
+    """
     def __init__(self, name, x, y):
         self.name = name
         self.rect = pg.Rect(x, y, c.TILE_WIDTH, c.TILE_WIDTH)

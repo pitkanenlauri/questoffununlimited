@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="562">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="709">
  <tileset firstgid="1" source="overworld.tsx"/>
  <tileset firstgid="1441" source="objects.tsx"/>
  <tileset firstgid="2101" source="object_icons.tsx"/>
@@ -137,7 +137,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,605,606,565,525,527,526,526,526,527,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,605,525,527,566,566,566,567,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,565,567,371,606,606,607,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,605,607,608,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,371,607,0,0,0,2147484255,606,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,605,607,608,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,528,0,0,0,0,0,605,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,371,607,608,0,0,0,0,0,0,605,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,607,608,0,0,0,0,0,0,0,0,0,605,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1134,0,0,0,1297,1299,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -916,6 +916,623 @@
   <object id="561" name="chicken" gid="2331" x="448" y="144" width="16" height="16">
    <properties>
     <property name="direction" value="right"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="10" name="map_objects">
+  <object id="562" name="wave" gid="41" x="112" y="768" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="603" name="wave" gid="41" x="16" y="672" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="604" name="wave" gid="41" x="80" y="704" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="613" name="wave" gid="41" x="32" y="752" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="614" name="wave" gid="41" x="64" y="816" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="615" name="wave" gid="41" x="176" y="848" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="616" name="wave" gid="41" x="96" y="880" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="617" name="wave" gid="41" x="16" y="880" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="618" name="wave" gid="41" x="64" y="928" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="619" name="wave" gid="41" x="144" y="928" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="620" name="wave" gid="41" x="160" y="640" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="621" name="wave" gid="41" x="64" y="624" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="622" name="wave" gid="41" x="16" y="496" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="623" name="wave" gid="41" x="128" y="528" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="624" name="wave" gid="41" x="192" y="544" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="625" name="wave" gid="41" x="112" y="448" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="626" name="wave" gid="41" x="64" y="512" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="627" name="wave" gid="41" x="16" y="560" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="628" name="wave" gid="41" x="144" y="576" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="629" name="wave" gid="41" x="112" y="656" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="630" name="wave" gid="41" x="16" y="608" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="631" name="wave" gid="41" x="144" y="704" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="632" name="wave" gid="41" x="208" y="592" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="634" name="wave" gid="41" x="272" y="624" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="635" name="wave" gid="41" x="352" y="576" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="636" name="wave" gid="41" x="304" y="560" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="637" name="wave" gid="41" x="256" y="576" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="638" name="wave" gid="41" x="240" y="512" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="639" name="wave" gid="41" x="176" y="480" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="640" name="wave" gid="41" x="32" y="432" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="641" name="wave" gid="41" x="80" y="576" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="642" name="wave" gid="41" x="304" y="480" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="643" name="wave" gid="41" x="240" y="448" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="644" name="wave" gid="41" x="352" y="480" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="646" name="wave" gid="41" x="368" y="416" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="647" name="wave" gid="41" x="400" y="480" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="649" name="wave" gid="41" x="352" y="512" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="650" name="wave" gid="41" x="464" y="448" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="651" name="wave" gid="41" x="528" y="416" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="652" name="wave" gid="41" x="144" y="384" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="653" name="wave" gid="41" x="80" y="368" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="654" name="wave" gid="41" x="16" y="336" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="655" name="wave" gid="41" x="16" y="256" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="656" name="wave" gid="41" x="80" y="288" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="657" name="wave" gid="41" x="144" y="320" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="658" name="wave" gid="41" x="128" y="224" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="659" name="wave" gid="41" x="48" y="192" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="660" name="wave" gid="41" x="16" y="128" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="662" name="wave" gid="41" x="16" y="16" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="663" name="wave" gid="41" x="64" y="48" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="664" name="wave" gid="41" x="16" y="64" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="665" name="wave" gid="41" x="80" y="112" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="666" name="wave" gid="41" x="112" y="32" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="667" name="wave" gid="41" x="160" y="80" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="668" name="wave" gid="41" x="112" y="160" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="669" name="wave" gid="41" x="192" y="192" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="670" name="wave" gid="41" x="272" y="176" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="671" name="wave" gid="41" x="192" y="240" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="672" name="wave" gid="41" x="208" y="112" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="673" name="wave" gid="41" x="176" y="16" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="675" name="wave" gid="41" x="80" y="224" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="676" name="wave" gid="41" x="160" y="128" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="677" name="wave" gid="41" x="240" y="240" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="678" name="wave" gid="41" x="192" y="416" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="679" name="wave" gid="41" x="128" y="832" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="680" name="wave" gid="41" x="656" y="400" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="681" name="wave" gid="41" x="688" y="352" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="682" name="wave" gid="41" x="512" y="464" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="683" name="wave" gid="41" x="736" y="320" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="684" name="wave" gid="41" x="704" y="272" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="685" name="wave" gid="41" x="736" y="240" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="686" name="wave" gid="41" x="720" y="192" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="687" name="wave" gid="41" x="688" y="128" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="688" name="wave" gid="41" x="736" y="128" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="689" name="wave" gid="41" x="656" y="96" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="690" name="wave" gid="41" x="656" y="160" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="691" name="wave" gid="41" x="576" y="400" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="692" name="waterfall5" gid="378" x="656" y="80" width="16" height="16">
+   <properties>
+    <property name="frame_width" type="int" value="80"/>
+    <property name="frames" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="699" name="wave" gid="41" x="224" y="160" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="700" name="wave" gid="41" x="16" y="960" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="701" name="wave" gid="41" x="16" y="800" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="702" name="wave" gid="41" x="288" y="528" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="703" name="wave" gid="41" x="416" y="432" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="704" name="wave" gid="41" x="288" y="432" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="705" name="wave" gid="41" x="144" y="272" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="706" name="wave" gid="41" x="720" y="160" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="707" name="wave" gid="41" x="768" y="176" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="708" name="wave" gid="41" x="624" y="112" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
    </properties>
   </object>
  </objectgroup>

@@ -1,7 +1,7 @@
 import pygame as pg
 
 import constants as c
-from sprites import Player, Wanderer, Mover, Chicken
+from sprites import Player, Wanderer, Mover, Chicken, MapObject
 from tools import State, Camera, Portal
 from setup import TMX
 from tmx_renderer import Renderer
@@ -32,6 +32,7 @@ class MapState(State):
         self.sprites = self.make_sprites()
         self.blockers = self.make_blockers()
         self.portals = self.open_portals()
+        self.map_objects = self.make_map_objects()
     
     def make_player(self):
         layer = self.tmx_renderer.get_layer('start_points')
@@ -74,6 +75,18 @@ class MapState(State):
         
         return blockers
     
+    def make_map_objects(self):
+        map_objects = pg.sprite.Group()
+        
+        layer = self.tmx_renderer.get_layer('map_objects')
+        for obj in layer:
+            map_object = MapObject(
+                obj.name, obj.x, obj.y, obj.properties['frames'], 
+                                        obj.properties['frame_width'])
+            map_objects.add(map_object)
+        
+        return map_objects
+    
     def open_portals(self):
         portals = []
         
@@ -101,14 +114,19 @@ class MapState(State):
     
     def running_normally(self, window, keys, dt):
         self.player.update(keys, dt)
-        self.sprites.update(dt)      
+        self.sprites.update(dt)
         self.handle_collisions()  
         self.camera.update(self.player.rect)
+        self.map_objects.update()
         self.update_window(window)
         self.check_for_portals()
 
     def update_window(self, window):
         window.blit(self.map_image, self.camera.apply(self.map_rect))
+        
+        for obj in self.map_objects:
+            window.blit(obj.image, self.camera.apply(obj.rect))
+        
         window.blit(self.player.image, self.camera.apply(self.player.rect))
         
         for sprite in self.sprites:
