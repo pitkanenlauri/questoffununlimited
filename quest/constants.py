@@ -6,7 +6,8 @@ FPS = 60
 TILE_WIDTH = 16
 ANIMATION_SPEED = 16 # For map objects
 
-COLORKEY = (255, 255, 255) # White
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 
 # Game states
 SANDY_COVE = 'sandy_cove'

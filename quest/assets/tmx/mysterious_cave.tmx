@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="208">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="217">
  <tileset firstgid="1" source="cave.tsx"/>
  <tileset firstgid="1001" source="objects.tsx"/>
  <tileset firstgid="1661" source="object_icons.tsx"/>
@@ -166,9 +166,9 @@
 0,44,205,0,0,0,0,0,42,0,0,0,0,0,0,0,0,0,0,0,44,205,0,0,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,44,205,0,0,0,0,0,42,0,0,0,0,0,0,0,0,0,0,0,44,205,0,0,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,44,205,0,0,0,0,0,42,0,0,0,0,0,0,0,0,0,0,0,44,205,0,0,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,44,205,0,0,0,0,0,42,0,0,0,0,0,0,0,0,0,0,0,44,205,0,0,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,44,205,0,0,0,0,0,42,0,0,0,0,0,0,0,0,0,0,0,44,205,0,0,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,44,205,0,0,0,0,0,42,0,0,0,0,0,0,0,0,0,0,0,44,205,0,0,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,44,205,281,282,283,0,0,42,0,0,0,0,0,0,0,0,0,0,0,44,205,0,0,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,44,205,321,322,323,0,0,42,0,0,0,0,0,0,0,0,0,0,0,44,205,0,0,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,44,205,361,362,363,0,0,42,0,0,0,0,0,0,0,0,0,0,0,44,205,0,0,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,44,205,0,0,0,0,0,42,0,0,0,0,0,0,0,0,0,0,5,84,205,0,0,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,45,3,4,165,0,2,3,46,0,0,0,0,0,0,0,0,0,0,44,124,205,0,0,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,44,205,0,42,0,0,0,0,0,0,0,0,0,0,0,5,84,204,205,0,0,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -447,6 +447,14 @@
   <object id="205" gid="1931" x="272" y="944" width="16" height="16"/>
   <object id="206" gid="1931" x="256" y="960" width="16" height="16"/>
   <object id="207" gid="1931" x="240" y="944" width="16" height="16"/>
+  <object id="208" gid="1931" x="48" y="544" width="16" height="16"/>
+  <object id="209" gid="1931" x="64" y="544" width="16" height="16"/>
+  <object id="210" gid="1931" x="80" y="544" width="16" height="16"/>
+  <object id="211" gid="1931" x="80" y="560" width="16" height="16"/>
+  <object id="212" gid="1931" x="80" y="576" width="16" height="16"/>
+  <object id="213" gid="1931" x="64" y="576" width="16" height="16"/>
+  <object id="214" gid="1931" x="48" y="576" width="16" height="16"/>
+  <object id="215" gid="1931" x="48" y="560" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="6" name="portals">
   <object id="200" name="sandy_cove" gid="1900" x="256" y="944" width="16" height="16"/>
@@ -465,5 +473,13 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="9" name="map_objects"/>
+ <objectgroup id="9" name="map_objects">
+  <object id="216" name="wave_cave" gid="286" x="64" y="560" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="8"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

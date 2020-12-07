@@ -74,7 +74,7 @@ def create_game_data_dict():
     }
     return data_dict
 
-def load_all_gfx(directory, colorkey=c.COLORKEY, accept=('.png')):
+def load_all_gfx(directory, colorkey=c.WHITE, accept=('.png')):
     graphics = {}
     for pic in os.listdir(directory):
         name, ext = os.path.splitext(pic)

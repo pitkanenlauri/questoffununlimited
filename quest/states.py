@@ -82,7 +82,8 @@ class MapState(State):
         for obj in layer:
             map_object = MapObject(
                 obj.name, obj.x, obj.y, obj.properties['frames'], 
-                                        obj.properties['frame_width'])
+                                        obj.properties['frame_width'],
+                                        obj.properties['frame_height'])
             map_objects.add(map_object)
         
         return map_objects

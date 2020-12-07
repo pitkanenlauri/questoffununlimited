@@ -50,7 +50,7 @@ class Sprite(pg.sprite.Sprite):
             for column in range(4):
                 image = pg.Surface([tw, tw])
                 image.blit(sheet, (0, 0), (column*tw, row*tw, tw, tw))
-                image.set_colorkey(c.COLORKEY)
+                image.set_colorkey(c.WHITE)
                 image_list.append(image)
                 
         for key, image in zip(image_keys, image_list):
