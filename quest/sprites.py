@@ -296,7 +296,7 @@ class Chicken(Sprite):
         self.dt = dt
         
         # Probability of moving is 1/125 i.e. 48% per second with 60 FPS.
-        if (self.action == 'resting' and random.random() > 0.008
+        if (self.action == 'resting' and random.random() < 0.008
             and self.rested):
             self.auto_moving()
             self.rested = False
