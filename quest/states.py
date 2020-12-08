@@ -19,6 +19,7 @@ class MapState(State):
     def start_up(self, game_data):
         self.game_data = game_data
         self.state = 'normal'
+        self.show_inventory = True
         
         self.tmx_renderer = Renderer(self.tmx_map)
         self.map_image = self.tmx_renderer.render_map()
@@ -119,6 +120,7 @@ class MapState(State):
         self.handle_collisions()  
         self.camera.update(self.player.rect)
         self.map_objects.update()
+        self.check_key_actions(keys)
         self.update_window(window)
         self.check_for_portals()
 
@@ -133,7 +135,8 @@ class MapState(State):
         for sprite in self.sprites:
             window.blit(sprite.image, self.camera.apply(sprite.rect))
         
-        self.draw_inventory(window)
+        if self.show_inventory:
+            self.draw_inventory(window)
         
         new = pg.transform.scale2x(window)
         window.blit(new, (0, 0))
@@ -194,4 +197,9 @@ class MapState(State):
                 str(inventory['chickens']['max']), True, c.WHITE)
             window.blit(chickens_catched, (tw + x, (i * tw) + y))
             i += 1
-        
+    
+    def check_key_actions(self, keys):
+        if keys[pg.K_TAB]:
+            self.show_inventory = True
+        if keys[pg.K_q]:
+            self.show_inventory = False

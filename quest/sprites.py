@@ -203,8 +203,7 @@ class Player(Sprite):
     
     def update(self, keys, dt):
         self.blockers = self.set_blockers()
-        self.keys = keys
-        self.check_for_input()
+        self.check_for_input(keys)
         self.dt = dt
         action_function = self.action_dict[self.action]
         action_function()
@@ -214,15 +213,15 @@ class Player(Sprite):
         elif keys[pg.K_LCTRL]:
             self.speed = 1
     
-    def check_for_input(self):
+    def check_for_input(self, keys):
         if self.action == 'resting':
-            if self.keys[pg.K_UP]:
+            if keys[pg.K_UP] or keys[pg.K_w]:
                 self.begin_moving('up')
-            elif self.keys[pg.K_DOWN]:
+            elif keys[pg.K_DOWN] or keys[pg.K_s]:
                 self.begin_moving('down')
-            elif self.keys[pg.K_LEFT]:
+            elif keys[pg.K_LEFT] or keys[pg.K_a]:
                 self.begin_moving('left')
-            elif self.keys[pg.K_RIGHT]:
+            elif keys[pg.K_RIGHT] or keys[pg.K_d]:
                 self.begin_moving('right')
 
 
