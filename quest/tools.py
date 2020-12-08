@@ -70,7 +70,20 @@ def create_game_data_dict():
     Creates a dictionary of game data to be carried 
     between states and for save game functionality.
     """
-    data_dict = {'last_location': None,
+    player_items = {'gold': 9,
+                    'chickens': {'show': True,
+                                 'amount': 9,
+                                 'max': 10}
+                    }
+    
+    chicken_catch = {'active': True,
+                     'level': 1}
+    
+    quest_dict = {'chicken_rescue': False,
+                  'chicken_catch': chicken_catch}
+    
+    data_dict = {'player_inventory': player_items,
+                 'quests': quest_dict
     }
     return data_dict
 
@@ -96,6 +109,8 @@ def load_all_tmx(directory, accept=('.tmx')):
             tmx[name] = os.path.join(directory, file)
     return tmx
 
+def load_all_fonts(directory, accept=('.ttf')):
+    return load_all_tmx(directory, accept)
 
 class Camera:
     """

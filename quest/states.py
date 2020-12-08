@@ -3,7 +3,7 @@ import pygame as pg
 import constants as c
 from sprites import Player, Wanderer, Mover, Chicken, MapObject
 from tools import State, Camera, Portal
-from setup import TMX
+from setup import TMX, GFX, FONTS
 from tmx_renderer import Renderer
 
 class MapState(State):
@@ -133,6 +133,8 @@ class MapState(State):
         for sprite in self.sprites:
             window.blit(sprite.image, self.camera.apply(sprite.rect))
         
+        self.draw_inventory(window)
+        
         new = pg.transform.scale2x(window)
         window.blit(new, (0, 0))
         
@@ -170,5 +172,26 @@ class MapState(State):
         
         for sprite in collided_sprites:
             sprite.begin_resting()
+    
+    def draw_inventory(self, window):
+        inventory = self.game_data['player_inventory']
+        font = pg.font.Font(FONTS['SuperLegendBoy'], 8)
+        tw = c.TILE_WIDTH
+        i = 0
+        # Text x and y offsets:
+        x = 2
+        y = 3
         
+        window.blit(GFX['gold'], (0, i * tw))
+        coin_amount = font.render('x' + str(inventory['gold']), True, c.WHITE)
+        window.blit(coin_amount, (tw + x, (i * tw)+ y))
+        i += 1
+        
+        if inventory['chickens']['show']:
+            window.blit(GFX['chickens'], (0, i * tw))
+            chickens_catched = font.render(
+                str(inventory['chickens']['amount']) + '/' + 
+                str(inventory['chickens']['max']), True, c.WHITE)
+            window.blit(chickens_catched, (tw + x, (i * tw) + y))
+            i += 1
         
