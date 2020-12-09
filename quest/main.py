@@ -10,7 +10,8 @@ def main():
     game_data = tools.create_game_data_dict()
     # Create a dictionary to keep track of game states.
     state_dict = {c.SANDY_COVE: states.MapState(c.SANDY_COVE),
-                  c.MYSTERIOUS_CAVE: states.MapState(c.MYSTERIOUS_CAVE)
+                  c.MYSTERIOUS_CAVE: states.MapState(c.MYSTERIOUS_CAVE),
+                  c.CHICKEN_CATCH: states.ChickenCatch(c.CHICKEN_CATCH)
     }
     gm = tools.GameStatesManager()
     gm.setup(state_dict, c.SANDY_COVE)

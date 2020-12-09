@@ -266,8 +266,9 @@ class Mover(Sprite):
 
 
 class Chicken(Sprite):
-    def __init__(self, x, y, direction):
+    def __init__(self, x, y, direction, tiled_id=None):
         super().__init__('chicken_move', x, y, direction)
+        self.tiled_id = tiled_id
         self.speed = 0.5
         self.moves = ['up', 'down', 'left', 'right']
         self.rest_sheet_dict = self.create_spritesheet_dict('chicken_rest')
@@ -331,7 +332,7 @@ class MapObject(pg.sprite.Sprite):
         
         return image_list
     
-    def update(self):
+    def update(self, dt=None):
         if self.counter > self.animation_speed - 1:
             self.counter = 0
         

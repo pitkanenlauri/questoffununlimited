@@ -20,6 +20,7 @@ class MapState(State):
         self.game_data = game_data
         self.state = 'normal'
         self.show_inventory = True
+        self.inventory = self.game_data['player_inventory']
         
         self.tmx_renderer = Renderer(self.tmx_map)
         self.map_image = self.tmx_renderer.render_map()
@@ -92,7 +93,7 @@ class MapState(State):
     
     def make_map_items(self):
         map_items = pg.sprite.Group()
-        found_items = self.game_data['map_data'][self.name]['found_items']
+        found_items = self.inventory['found_items']
         
         layer = self.tmx_renderer.get_layer('map_items')
         for obj in layer:
@@ -123,14 +124,13 @@ class MapState(State):
                 self.done = True
     
     def check_for_items(self):
-        inventory = self.game_data['player_inventory']
-        found_items = self.game_data['map_data'][self.name]['found_items']
+        found_items = self.inventory['found_items']
         
         for item in self.map_items:
             if self.player.rect.colliderect(item.rect):
                 if item.name == 'coin':
                     found_items.add(item.tiled_id)
-                    inventory['gold'] += 1
+                    self.inventory['gold'] += 1
                     item.kill()
             
     def make_map_state_dict(self):
@@ -149,7 +149,7 @@ class MapState(State):
         self.check_for_items()
         self.camera.update(self.player.rect)
         self.map_objects.update()
-        self.map_items.update()
+        self.map_items.update(dt)
         self.check_key_actions(keys)
         self.update_window(window)
         self.check_for_portals()
@@ -210,7 +210,6 @@ class MapState(State):
             sprite.begin_resting()
     
     def draw_inventory(self, window):
-        inventory = self.game_data['player_inventory']
         font = pg.font.Font(FONTS['SuperLegendBoy'], 8)
         tw = c.TILE_WIDTH
         i = 0
@@ -219,15 +218,16 @@ class MapState(State):
         y = 3
         
         window.blit(GFX['gold'], (0, i * tw))
-        coin_amount = font.render('x' + str(inventory['gold']), True, c.WHITE)
+        coin_amount = font.render(
+            'x' + str(self.inventory['gold']), True, c.WHITE)
         window.blit(coin_amount, (tw + x, (i * tw)+ y))
         i += 1
         
-        if inventory['chickens']['show']:
+        if self.inventory['chickens']['show']:
             window.blit(GFX['chickens'], (0, i * tw))
             chickens_catched = font.render(
-                str(inventory['chickens']['amount']) + '/' + 
-                str(inventory['chickens']['max']), True, c.WHITE)
+                str(self.inventory['chickens']['amount']) + '/' + 
+                str(self.inventory['chickens']['max']), True, c.WHITE)
             window.blit(chickens_catched, (tw + x, (i * tw) + y))
             i += 1
     
@@ -236,3 +236,40 @@ class MapState(State):
             self.show_inventory = True
         if keys[pg.K_q]:
             self.show_inventory = False
+
+
+class ChickenCatch(MapState):
+    def __init__(self, name):
+        super().__init__(name)
+    
+    def start_up(self, game_data):
+        super().start_up(game_data)
+        self.chickens_catched = (
+            game_data['quest_data']['chicken_catch']['chickens_catched'])
+        
+        self.make_chickens()
+        
+    def make_chickens(self):
+        max_chickens = 0
+        
+        layer = self.tmx_renderer.get_layer('runaway_chickens')
+        for obj in layer:
+            max_chickens += 1
+            if obj.id not in self.chickens_catched:
+                chicken = Chicken(obj.x, obj.y, obj.properties['direction'],
+                                  obj.id)
+                self.sprites.add(chicken)
+                
+        self.inventory['chickens']['max'] = max_chickens
+    
+    def handle_collisions(self):
+        for sprite in self.sprites:
+            if sprite.name == 'chicken_move':
+                if self.player.rect.colliderect(sprite.rect):
+                    self.chickens_catched.add(sprite.tiled_id)
+                    self.inventory['chickens']['amount'] += 1
+                    sprite.kill()
+        
+        super().handle_collisions()
+    
+    

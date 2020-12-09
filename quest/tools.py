@@ -75,7 +75,8 @@ def create_game_data_dict():
     player_items = {'gold': 0,
                     'chickens': {'show': True,
                                  'amount': 0,
-                                 'max': 0}
+                                 'max': 0},
+                    'found_items': set()
                     }
     
     # Data dicts for quests.
@@ -84,7 +85,8 @@ def create_game_data_dict():
                       }
     
     chicken_catch = {'active': False,
-                     'level': 1
+                     'level': 1,
+                     'chickens_catched': set()
                      }
     
     quests = {'chicken_rescue': chicken_rescue,
@@ -93,11 +95,9 @@ def create_game_data_dict():
     
     # Data dicts for map states.
     ##################################################
-    sandy_cove = {'found_items': set()
-                  }
+    sandy_cove = {}
     
-    mysterious_cave = {'found_items': set()
-                       }
+    mysterious_cave = {}
     
     map_data = {c.SANDY_COVE: sandy_cove,
                 c.MYSTERIOUS_CAVE: mysterious_cave

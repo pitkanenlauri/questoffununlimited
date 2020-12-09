@@ -12,3 +12,4 @@ BLACK = (0, 0, 0)
 # Game states
 SANDY_COVE = 'sandy_cove'
 MYSTERIOUS_CAVE = 'mysterious_cave'
+CHICKEN_CATCH = 'chicken_catch'
