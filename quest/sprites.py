@@ -304,10 +304,11 @@ class Chicken(Sprite):
         action_function()
         
 class MapObject(pg.sprite.Sprite):
-    def __init__(self, sheet_key, x, y, frames, 
-                 frame_width=c.TILE_WIDTH, frame_height=c.TILE_WIDTH):
+    def __init__(self, sheet_key, x, y, frames, frame_width, frame_height, 
+                 tiled_id=None):
         super().__init__()
         self.name = sheet_key
+        self.tiled_id = tiled_id
         self.image_list = self.create_image_list(
             sheet_key, frames, frame_width, frame_height)
         self.image = self.image_list[0]

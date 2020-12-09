@@ -33,7 +33,8 @@ class MapState(State):
         self.sprites = self.make_sprites()
         self.blockers = self.make_blockers()
         self.portals = self.open_portals()
-        self.map_objects, self.map_items = self.make_map_objects()
+        self.map_objects = self.make_map_objects()
+        self.map_items = self.make_map_items()
     
     def make_player(self):
         layer = self.tmx_renderer.get_layer('start_points')
@@ -78,7 +79,6 @@ class MapState(State):
     
     def make_map_objects(self):
         map_objects = pg.sprite.Group()
-        map_items = pg.sprite.Group()
         
         layer = self.tmx_renderer.get_layer('map_objects')
         for obj in layer:
@@ -87,11 +87,24 @@ class MapState(State):
                                         obj.properties['frame_width'],
                                         obj.properties['frame_height'])
             map_objects.add(map_object)
-            
-            if obj.name == 'coin':
-                map_items.add(map_object)
         
-        return map_objects, map_items
+        return map_objects
+    
+    def make_map_items(self):
+        map_items = pg.sprite.Group()
+        found_items = self.game_data['map_data'][self.name]['found_items']
+        
+        layer = self.tmx_renderer.get_layer('map_items')
+        for obj in layer:
+            if obj.id not in found_items:
+                item = MapObject(
+                    obj.name, obj.x, obj.y, obj.properties['frames'], 
+                                            obj.properties['frame_width'],
+                                            obj.properties['frame_height'],
+                                            obj.id)
+                map_items.add(item)
+        
+        return map_items
     
     def open_portals(self):
         portals = []
@@ -111,12 +124,14 @@ class MapState(State):
     
     def check_for_items(self):
         inventory = self.game_data['player_inventory']
+        found_items = self.game_data['map_data'][self.name]['found_items']
         
         for item in self.map_items:
             if self.player.rect.colliderect(item.rect):
                 if item.name == 'coin':
-                    item.kill()
+                    found_items.add(item.tiled_id)
                     inventory['gold'] += 1
+                    item.kill()
             
     def make_map_state_dict(self):
         map_state_dict = {'normal': self.running_normally
@@ -134,6 +149,7 @@ class MapState(State):
         self.check_for_items()
         self.camera.update(self.player.rect)
         self.map_objects.update()
+        self.map_items.update()
         self.check_key_actions(keys)
         self.update_window(window)
         self.check_for_portals()
@@ -143,6 +159,9 @@ class MapState(State):
         
         for obj in self.map_objects:
             window.blit(obj.image, self.camera.apply(obj.rect))
+        
+        for item in self.map_items:
+            window.blit(item.image, self.camera.apply(item.rect))
         
         window.blit(self.player.image, self.camera.apply(self.player.rect))
         

@@ -70,21 +70,45 @@ def create_game_data_dict():
     Creates a dictionary of game data to be carried 
     between states and for save game functionality.
     """
+    # Items that player has collected and is carrying.
+    ##################################################
     player_items = {'gold': 0,
                     'chickens': {'show': True,
                                  'amount': 0,
                                  'max': 0}
                     }
     
-    chicken_catch = {'active': True,
-                     'level': 1}
+    # Data dicts for quests.
+    ##################################################
+    chicken_rescue = {'active': False,
+                      }
     
-    quest_dict = {'chicken_rescue': False,
-                  'chicken_catch': chicken_catch}
+    chicken_catch = {'active': False,
+                     'level': 1
+                     }
     
+    quests = {'chicken_rescue': chicken_rescue,
+              'chicken_catch': chicken_catch
+              }
+    
+    # Data dicts for map states.
+    ##################################################
+    sandy_cove = {'found_items': set()
+                  }
+    
+    mysterious_cave = {'found_items': set()
+                       }
+    
+    map_data = {c.SANDY_COVE: sandy_cove,
+                c.MYSTERIOUS_CAVE: mysterious_cave
+                }
+    
+    # Compile the above into game_data dictionary
+    ##################################################
     data_dict = {'player_inventory': player_items,
-                 'quests': quest_dict
-    }
+                 'quest_data': quests,
+                 'map_data': map_data
+                 }
     return data_dict
 
 def load_all_gfx(directory, colorkey=c.WHITE, accept=('.png')):

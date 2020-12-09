@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="752">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="778">
  <tileset firstgid="1" source="overworld.tsx"/>
  <tileset firstgid="1441" source="objects.tsx"/>
  <tileset firstgid="2101" source="object_icons.tsx"/>
@@ -1555,63 +1555,65 @@
     <property name="frames" type="int" value="3"/>
    </properties>
   </object>
-  <object id="719" name="coin" gid="1573" x="240" y="784" width="16" height="16">
+ </objectgroup>
+ <objectgroup id="12" name="map_items">
+  <object id="761" name="coin" gid="1573" x="208" y="784" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="744" name="coin" gid="1573" x="352" y="784" width="16" height="16">
+  <object id="770" name="coin" gid="1573" x="336" y="784" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="745" name="coin" gid="1573" x="464" y="784" width="16" height="16">
+  <object id="771" name="coin" gid="1573" x="480" y="784" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="746" name="coin" gid="1573" x="464" y="720" width="16" height="16">
+  <object id="772" name="coin" gid="1573" x="512" y="688" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="747" name="coin" gid="1573" x="608" y="672" width="16" height="16">
+  <object id="773" name="coin" gid="1573" x="608" y="688" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="748" name="coin" gid="1573" x="608" y="400" width="16" height="16">
+  <object id="774" name="coin" gid="1573" x="608" y="560" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="749" name="coin" gid="1573" x="576" y="272" width="16" height="16">
+  <object id="775" name="coin" gid="1573" x="608" y="400" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="750" name="coin" gid="1573" x="528" y="192" width="16" height="16">
+  <object id="776" name="coin" gid="1573" x="560" y="256" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="751" name="coin" gid="1573" x="496" y="128" width="16" height="16">
+  <object id="777" name="coin" gid="1573" x="496" y="128" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
