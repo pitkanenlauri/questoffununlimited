@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="730">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="752">
  <tileset firstgid="1" source="overworld.tsx"/>
  <tileset firstgid="1441" source="objects.tsx"/>
  <tileset firstgid="2101" source="object_icons.tsx"/>
@@ -783,6 +783,10 @@
   <object id="715" gid="2371" x="576" y="624" width="16" height="16"/>
   <object id="716" gid="2371" x="576" y="640" width="16" height="16"/>
   <object id="717" gid="2371" x="560" y="640" width="16" height="16"/>
+  <object id="730" gid="2371" x="512" y="352" width="16" height="16"/>
+  <object id="731" gid="2371" x="336" y="336" width="16" height="16"/>
+  <object id="732" gid="2371" x="320" y="336" width="16" height="16"/>
+  <object id="733" gid="2371" x="304" y="336" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="7" name="start_points">
   <object id="492" name="start" gid="2341" x="176" y="784" width="16" height="16">
@@ -1551,56 +1555,79 @@
     <property name="frames" type="int" value="3"/>
    </properties>
   </object>
-  <object id="719" name="coin" gid="1573" x="208" y="784" width="16" height="16">
+  <object id="719" name="coin" gid="1573" x="240" y="784" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="720" name="heart" gid="1540" x="208" y="768" width="16" height="16">
+  <object id="744" name="coin" gid="1573" x="352" y="784" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="722" name="heart" gid="1540" x="208" y="816" width="16" height="16">
+  <object id="745" name="coin" gid="1573" x="464" y="784" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="725" name="heart" gid="1540" x="224" y="816" width="16" height="16">
+  <object id="746" name="coin" gid="1573" x="464" y="720" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="726" name="heart" gid="1540" x="240" y="816" width="16" height="16">
+  <object id="747" name="coin" gid="1573" x="608" y="672" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="727" name="coin" gid="1573" x="208" y="800" width="16" height="16">
+  <object id="748" name="coin" gid="1573" x="608" y="400" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="728" name="coin" gid="1573" x="208" y="832" width="16" height="16">
+  <object id="749" name="coin" gid="1573" x="576" y="272" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>
     <property name="frames" type="int" value="4"/>
    </properties>
   </object>
-  <object id="729" name="glimmer" gid="1551" x="304" y="816" width="16" height="16">
+  <object id="750" name="coin" gid="1573" x="528" y="192" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="751" name="coin" gid="1573" x="496" y="128" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="4"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="11" name="map_obj_not_in_use_but_implemented">
+  <object id="735" name="glimmer" gid="1551" x="208" y="816" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="740" name="heart" gid="1540" x="208" y="800" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>

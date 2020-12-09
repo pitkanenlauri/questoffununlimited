@@ -307,6 +307,7 @@ class MapObject(pg.sprite.Sprite):
     def __init__(self, sheet_key, x, y, frames, 
                  frame_width=c.TILE_WIDTH, frame_height=c.TILE_WIDTH):
         super().__init__()
+        self.name = sheet_key
         self.image_list = self.create_image_list(
             sheet_key, frames, frame_width, frame_height)
         self.image = self.image_list[0]

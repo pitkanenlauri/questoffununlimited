@@ -70,10 +70,10 @@ def create_game_data_dict():
     Creates a dictionary of game data to be carried 
     between states and for save game functionality.
     """
-    player_items = {'gold': 9,
+    player_items = {'gold': 0,
                     'chickens': {'show': True,
-                                 'amount': 9,
-                                 'max': 10}
+                                 'amount': 0,
+                                 'max': 0}
                     }
     
     chicken_catch = {'active': True,

@@ -33,7 +33,7 @@ class MapState(State):
         self.sprites = self.make_sprites()
         self.blockers = self.make_blockers()
         self.portals = self.open_portals()
-        self.map_objects = self.make_map_objects()
+        self.map_objects, self.map_items = self.make_map_objects()
     
     def make_player(self):
         layer = self.tmx_renderer.get_layer('start_points')
@@ -78,6 +78,7 @@ class MapState(State):
     
     def make_map_objects(self):
         map_objects = pg.sprite.Group()
+        map_items = pg.sprite.Group()
         
         layer = self.tmx_renderer.get_layer('map_objects')
         for obj in layer:
@@ -86,8 +87,11 @@ class MapState(State):
                                         obj.properties['frame_width'],
                                         obj.properties['frame_height'])
             map_objects.add(map_object)
+            
+            if obj.name == 'coin':
+                map_items.add(map_object)
         
-        return map_objects
+        return map_objects, map_items
     
     def open_portals(self):
         portals = []
@@ -105,6 +109,15 @@ class MapState(State):
                 self.next = portal.name
                 self.done = True
     
+    def check_for_items(self):
+        inventory = self.game_data['player_inventory']
+        
+        for item in self.map_items:
+            if self.player.rect.colliderect(item.rect):
+                if item.name == 'coin':
+                    item.kill()
+                    inventory['gold'] += 1
+            
     def make_map_state_dict(self):
         map_state_dict = {'normal': self.running_normally
         }
@@ -117,7 +130,8 @@ class MapState(State):
     def running_normally(self, window, keys, dt):
         self.player.update(keys, dt)
         self.sprites.update(dt)
-        self.handle_collisions()  
+        self.handle_collisions()
+        self.check_for_items()
         self.camera.update(self.player.rect)
         self.map_objects.update()
         self.check_key_actions(keys)
