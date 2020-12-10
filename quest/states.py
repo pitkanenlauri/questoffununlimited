@@ -15,20 +15,20 @@ class MapState(State):
         super().__init__()
         self.name = name
         self.tmx_map = TMX[name]
+        self.font = pg.font.Font(FONTS['SuperLegendBoy'], 8)
     
     def start_up(self, game_data):
         self.game_data = game_data
         self.state = 'normal'
+        self.map_state = self.make_map_state_dict()
+        
         self.show_inventory = True
         self.inventory = self.game_data['player_inventory']
         
         self.tmx_renderer = Renderer(self.tmx_map)
         self.map_image = self.tmx_renderer.render_map()
         self.map_rect = self.map_image.get_rect()
-        
         self.camera = Camera(self.map_rect.width, self.map_rect.height)
-        
-        self.map_state = self.make_map_state_dict()
 
         self.player = self.make_player()
         self.sprites = self.make_sprites()
@@ -39,6 +39,7 @@ class MapState(State):
     
     def make_player(self):
         layer = self.tmx_renderer.get_layer('start_points')
+        
         for obj in layer:
             if obj.name == self.previous:
                 player = s.Player(obj.x, obj.y, obj.properties['direction'])
@@ -50,8 +51,8 @@ class MapState(State):
     
     def make_sprites(self):
         sprites = pg.sprite.Group()
-        
         layer = self.tmx_renderer.get_layer('sprites')
+        
         for obj in layer:
             if obj.name == "wanderer":
                 sprite = s.Wanderer(
@@ -74,8 +75,8 @@ class MapState(State):
     
     def make_blockers(self):
         blockers = []
-        
         layer = self.tmx_renderer.get_layer('blockers')
+        
         for obj in layer:
             blocker = pg.Rect(obj.x, obj.y, c.TILE_WIDTH, c.TILE_WIDTH)
             blockers.append(blocker)
@@ -84,8 +85,8 @@ class MapState(State):
     
     def make_map_objects(self):
         map_objects = pg.sprite.Group()
-        
         layer = self.tmx_renderer.get_layer('map_objects')
+        
         for obj in layer:
             map_object = s.MapObject(
                 obj.name, obj.x, obj.y, obj.properties['frames'], 
@@ -98,8 +99,8 @@ class MapState(State):
     def make_map_items(self):
         map_items = pg.sprite.Group()
         found_items = self.inventory['found_items']
-        
         layer = self.tmx_renderer.get_layer('map_items')
+        
         for obj in layer:
             if obj.id not in found_items:
                 item = s.MapObject(
@@ -113,8 +114,8 @@ class MapState(State):
     
     def open_portals(self):
         portals = []
-        
         layer = self.tmx_renderer.get_layer('portals')
+        
         for obj in layer:
             portal = Portal(obj.name, obj.x, obj.y)
             portals.append(portal)
@@ -214,22 +215,19 @@ class MapState(State):
             sprite.begin_resting()
     
     def draw_inventory(self, window):
-        font = pg.font.Font(FONTS['SuperLegendBoy'], 8)
         tw = c.TILE_WIDTH
-        i = 0
-        # Text x and y offsets:
-        x = 2
-        y = 3
+        i = 0 # Inventory slot index from top down.
+        x, y = 2, 3 # Text x and y offsets.
         
         window.blit(GFX['gold'], (0, i * tw))
-        coin_amount = font.render(
+        coin_amount = self.font.render(
             'x' + str(self.inventory['gold']), True, c.WHITE)
         window.blit(coin_amount, (tw + x, (i * tw)+ y))
         i += 1
         
         if self.inventory['chickens']['show']:
             window.blit(GFX['chickens'], (0, i * tw))
-            chickens_catched = font.render(
+            chickens_catched = self.font.render(
                 str(self.inventory['chickens']['amount']) + '/' + 
                 str(self.inventory['chickens']['max']), True, c.WHITE)
             window.blit(chickens_catched, (tw + x, (i * tw) + y))
@@ -250,13 +248,12 @@ class ChickenCatch(MapState):
         super().start_up(game_data)
         self.chickens_catched = (
             game_data['quest_data']['chicken_catch']['chickens_catched'])
-        
         self.make_chickens()
         
     def make_chickens(self):
         max_chickens = 0
-        
         layer = self.tmx_renderer.get_layer('runaway_chickens')
+        
         for obj in layer:
             max_chickens += 1
             if obj.id not in self.chickens_catched:
@@ -276,4 +273,4 @@ class ChickenCatch(MapState):
         
         super().handle_collisions()
     
-    
+

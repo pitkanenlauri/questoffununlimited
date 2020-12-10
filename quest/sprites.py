@@ -324,4 +324,4 @@ class MapObject(pg.sprite.Sprite):
         self.image = self.image_list[image_number]
         self.counter += 1
         
-    
+
