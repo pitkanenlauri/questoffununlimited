@@ -259,6 +259,18 @@
 0,0,0,0,0,0,0,0,0,0,0,727,643,645,726,644,643,2684355205,3221226198,3221226198,1610613380,645,644,643,643,765,764,643,643,2684355205,3221226198,3221226198,1610613380,643,643,643,643,765,764,643,643,643,643,643,643,643,643,643,765,764
 </data>
  </layer>
+ <objectgroup id="13" name="runaway_chickens">
+  <object id="778" name="chicken" gid="2331" x="416" y="656" width="16" height="16">
+   <properties>
+    <property name="direction" value="left"/>
+   </properties>
+  </object>
+  <object id="779" name="chicken" gid="2331" x="416" y="768" width="16" height="16">
+   <properties>
+    <property name="direction" value="left"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="6" name="blockers">
   <object id="1" gid="2371" x="784" y="688" width="16" height="16"/>
   <object id="2" gid="2371" x="768" y="688" width="16" height="16"/>
@@ -788,30 +800,18 @@
   <object id="732" gid="2371" x="320" y="336" width="16" height="16"/>
   <object id="733" gid="2371" x="304" y="336" width="16" height="16"/>
  </objectgroup>
- <objectgroup id="13" name="runaway_chickens">
-  <object id="778" name="chicken" gid="2331" x="416" y="656" width="16" height="16">
-   <properties>
-    <property name="direction" value="left"/>
-   </properties>
-  </object>
-  <object id="779" name="chicken" gid="2331" x="416" y="768" width="16" height="16">
-   <properties>
-    <property name="direction" value="left"/>
-   </properties>
-  </object>
- </objectgroup>
  <objectgroup id="7" name="start_points">
-  <object id="492" name="sandy_cove" gid="2341" x="416" y="688" width="16" height="16">
+  <object id="492" name="sandy_cove" gid="2341" x="192" y="736" width="16" height="16">
    <properties>
-    <property name="direction" value="down"/>
+    <property name="direction" value="right"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="9" name="portals">
-  <object id="780" name="sandy_cove" gid="2340" x="336" y="672" width="16" height="16"/>
+  <object id="780" name="sandy_cove" gid="2340" x="240" y="688" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="8" name="sprites">
-  <object id="493" name="mover" gid="2334" x="240" y="720" width="16" height="16"/>
+  <object id="493" name="mover" gid="2334" x="272" y="800" width="16" height="16"/>
   <object id="494" name="wanderer" gid="2334" x="608" y="512" width="16" height="16">
    <properties>
     <property name="direction" value="left"/>

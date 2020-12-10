@@ -73,13 +73,13 @@ def create_game_data_dict():
     # Items that player has collected and is carrying.
     ##################################################
     player_items = {'gold': 0,
-                    'chickens': {'show': True,
+                    'chickens': {'show': False,
                                  'amount': 0,
                                  'max': 0},
                     'found_items': set()
                     }
     
-    # Data dicts for quests.
+    # Data for quests.
     ##################################################
     chicken_rescue = {'active': False,
                       }
@@ -93,14 +93,15 @@ def create_game_data_dict():
               'chicken_catch': chicken_catch
               }
     
-    # Data dicts for map states.
+    # Data for map states.
     ##################################################
     sandy_cove = {}
-    
     mysterious_cave = {}
+    tranquil_cabin = {}
     
     map_data = {c.SANDY_COVE: sandy_cove,
-                c.MYSTERIOUS_CAVE: mysterious_cave
+                c.MYSTERIOUS_CAVE: mysterious_cave,
+                c.TRANQUIL_CABIN: tranquil_cabin
                 }
     
     # Compile the above into game_data dictionary
@@ -135,6 +136,7 @@ def load_all_tmx(directory, accept=('.tmx')):
 
 def load_all_fonts(directory, accept=('.ttf')):
     return load_all_tmx(directory, accept)
+
 
 class Camera:
     """

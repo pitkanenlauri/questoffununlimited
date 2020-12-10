@@ -9,7 +9,10 @@ ANIMATION_SPEED = 16 # For map objects
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
-# Game states
+# Map game states
 SANDY_COVE = 'sandy_cove'
 MYSTERIOUS_CAVE = 'mysterious_cave'
+TRANQUIL_CABIN = 'tranquil_cabin'
+
+# Quest state of Sandy Cove
 CHICKEN_CATCH = 'chicken_catch'

@@ -199,14 +199,10 @@ class Sprite(pg.sprite.Sprite):
 class Player(Sprite):
     def __init__(self, x, y, direction):
         super().__init__('player', x, y, direction)
-        self.speed = 1
-    
+
     def update(self, keys, dt):
-        self.blockers = self.set_blockers()
         self.check_for_input(keys)
-        self.dt = dt
-        action_function = self.action_dict[self.action]
-        action_function()
+        super().update(dt)
         
         if keys[pg.K_LSHIFT]:
             self.speed = 3
@@ -232,14 +228,9 @@ class Wanderer(Sprite):
         self.moves = ['up', 'down', 'left', 'right']
     
     def update(self, dt):
-        self.blockers = self.set_blockers()
-        self.dt = dt
-        
         if self.action == 'resting':
             self.begin_moving(self.moves[random.randint(0, 3)])
-            
-        action_function = self.action_dict[self.action]
-        action_function()
+        super().update(dt)
 
 
 class Mover(Sprite):
@@ -255,14 +246,11 @@ class Mover(Sprite):
             self.index = 0
         self.begin_moving(self.moves[self.index])
         self.index += 1
-            
+    
     def update(self, dt):
-        self.blockers = self.set_blockers()
-        self.dt = dt
         if self.action == 'resting':
             self.auto_moving()
-        action_function = self.action_dict[self.action]
-        action_function()
+        super().update(dt)
 
 
 class Chicken(Sprite):
@@ -281,7 +269,7 @@ class Chicken(Sprite):
         self.begin_moving(self.moves[random.randint(0, 3)])
 
     def resting(self):
-        self.correct_position()
+        super().resting()
         self.image_list = self.rest_animation_dict[self.direction]
         
         if self.rest_counter > 63:
@@ -292,18 +280,14 @@ class Chicken(Sprite):
         self.rest_counter += 1
         
     def update(self, dt):
-        self.blockers = self.set_blockers()
-        self.dt = dt
-        
         # Probability of moving is 1/125 i.e. 48% per second with 60 FPS.
         if (self.action == 'resting' and random.random() < 0.008
             and self.rested):
             self.auto_moving()
             self.rested = False
-            
-        action_function = self.action_dict[self.action]
-        action_function()
+        super().update(dt)
         
+
 class MapObject(pg.sprite.Sprite):
     def __init__(self, sheet_key, x, y, frames, frame_width, frame_height, 
                  tiled_id=None):
@@ -332,7 +316,7 @@ class MapObject(pg.sprite.Sprite):
         
         return image_list
     
-    def update(self, dt=None):
+    def update(self):
         if self.counter > self.animation_speed - 1:
             self.counter = 0
         
@@ -340,6 +324,4 @@ class MapObject(pg.sprite.Sprite):
         self.image = self.image_list[image_number]
         self.counter += 1
         
-        
-        
-        
+    

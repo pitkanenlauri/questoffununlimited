@@ -1,7 +1,7 @@
 import pygame as pg
 
 import constants as c
-from sprites import Player, Wanderer, Mover, Chicken, MapObject
+import sprites as s
 from tools import State, Camera, Portal
 from setup import TMX, GFX, FONTS
 from tmx_renderer import Renderer
@@ -41,10 +41,10 @@ class MapState(State):
         layer = self.tmx_renderer.get_layer('start_points')
         for obj in layer:
             if obj.name == self.previous:
-                player = Player(obj.x, obj.y, obj.properties['direction'])
+                player = s.Player(obj.x, obj.y, obj.properties['direction'])
             
             if obj.name == 'start':
-                player = Player(obj.x, obj.y, obj.properties['direction'])
+                player = s.Player(obj.x, obj.y, obj.properties['direction'])
 
         return player
     
@@ -54,16 +54,20 @@ class MapState(State):
         layer = self.tmx_renderer.get_layer('sprites')
         for obj in layer:
             if obj.name == "wanderer":
-                sprite = Wanderer(
+                sprite = s.Wanderer(
                     'player_f', obj.x, obj.y, obj.properties['direction'])
                 sprites.add(sprite)
             
             if obj.name == 'mover':
-                sprite = Mover('uncle', obj.x, obj.y)
+                sprite = s.Mover('uncle', obj.x, obj.y)
                 sprites.add(sprite)
 
             if obj.name == 'chicken':
-                sprite = Chicken(obj.x, obj.y, obj.properties['direction'])
+                sprite = s.Chicken(obj.x, obj.y, obj.properties['direction'])
+                sprites.add(sprite)
+                
+            if obj.name == 'uncle':
+                sprite = s.Sprite(obj.name, obj.x, obj.y)
                 sprites.add(sprite)
         
         return sprites
@@ -83,7 +87,7 @@ class MapState(State):
         
         layer = self.tmx_renderer.get_layer('map_objects')
         for obj in layer:
-            map_object = MapObject(
+            map_object = s.MapObject(
                 obj.name, obj.x, obj.y, obj.properties['frames'], 
                                         obj.properties['frame_width'],
                                         obj.properties['frame_height'])
@@ -98,7 +102,7 @@ class MapState(State):
         layer = self.tmx_renderer.get_layer('map_items')
         for obj in layer:
             if obj.id not in found_items:
-                item = MapObject(
+                item = s.MapObject(
                     obj.name, obj.x, obj.y, obj.properties['frames'], 
                                             obj.properties['frame_width'],
                                             obj.properties['frame_height'],
@@ -149,7 +153,7 @@ class MapState(State):
         self.check_for_items()
         self.camera.update(self.player.rect)
         self.map_objects.update()
-        self.map_items.update(dt)
+        self.map_items.update()
         self.check_key_actions(keys)
         self.update_window(window)
         self.check_for_portals()
@@ -256,7 +260,7 @@ class ChickenCatch(MapState):
         for obj in layer:
             max_chickens += 1
             if obj.id not in self.chickens_catched:
-                chicken = Chicken(obj.x, obj.y, obj.properties['direction'],
+                chicken = s.Chicken(obj.x, obj.y, obj.properties['direction'],
                                   obj.id)
                 self.sprites.add(chicken)
                 
