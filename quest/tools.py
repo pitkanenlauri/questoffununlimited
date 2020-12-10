@@ -21,14 +21,14 @@ class GameStatesManager:
         self.state_name = start_state
         self.state = self.state_dict[self.state_name]
     
-    def update(self, window, keys, dt):
+    def update(self, window, keys, dt, events):
         """
         Checks if a state is done. Changes state if necessary 
         and state.update is called.
         """
         if self.state.done:
             self.flip_state()
-        self.state.update(window, keys, dt)
+        self.state.update(window, keys, dt, events)
         
     def flip_state(self):
         """
@@ -58,7 +58,7 @@ class State:
         self.done = False
         return self.game_data
     
-    def update(self, window, keys, dt):
+    def update(self, window, keys, dt, events):
         """
         Update method for state. Must be overrided in children.
         """

@@ -39,7 +39,9 @@ class MapState(State):
         
         # Test
         self.text_box = s.TextBox()
-    
+        hobbit = 'In a hole in the ground there lived a hobbit. Not a nasty, dirty, wet hole, filled with the ends of worms and an oozy smell, nor yet a dry, bare, sandy hole with nothing in it to sit down on or to eat: it was a hobbit-hole, and that means comfort.'
+        self.text_box.give_text(hobbit)
+        
     def make_player(self):
         layer = self.tmx_renderer.get_layer('start_points')
         
@@ -146,11 +148,11 @@ class MapState(State):
         }
         return map_state_dict
     
-    def update(self, window, keys, dt):
+    def update(self, window, keys, dt, events):
         map_state_function = self.map_state[self.state]
-        map_state_function(window, keys, dt)    
+        map_state_function(window, keys, dt, events)    
     
-    def running_normally(self, window, keys, dt):
+    def running_normally(self, window, keys, dt, events):
         self.player.update(keys, dt)
         self.sprites.update(dt)
         self.handle_collisions()
@@ -161,6 +163,9 @@ class MapState(State):
         self.check_key_actions(keys)
         self.update_window(window)
         self.check_for_portals()
+        
+        # Test
+        self.text_box.update(events)
 
     def update_window(self, window):
         window.blit(self.map_image, self.camera.apply(self.map_rect))
@@ -178,9 +183,8 @@ class MapState(State):
         
         if self.show_inventory:
             self.draw_inventory(window)
-            
+        
         # Test
-        self.text_box.update('In a hole in the ground there lived a hobbit. Not a nasty, dirty, wet hole, filled with the ends of worms...')
         window.blit(self.text_box.image, self.text_box.rect)
         
         new = pg.transform.scale2x(window)

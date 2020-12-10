@@ -328,16 +328,53 @@ class MapObject(pg.sprite.Sprite):
 class TextBox(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = GFX['text_box']
+        self.image = pg.Surface([240, 80])
+        self.clear()
         self.rect = self.image.get_rect(midbottom = (160, 240))
         self.font = pg.font.Font(FONTS['SuperLegendBoy'], 8)
+        self.index = 0
+        self.line_length = 37
+        self.lines = []
     
-    def update(self, text):
-        line_length =  37
-        lines = [
-            text[i:i+line_length] for i in range(0, len(text), line_length)]
-        for i in range(len(lines)):
-            line = self.font.render(lines[i], True, c.BROWN)
-            self.image.blit(line, (c.TILE_WIDTH + 3, (i + 1) * c.TILE_WIDTH + 2))
-            
+    def give_text(self, text):
+        lines_generator = self.get_lines(text, self.line_length)
+        self.lines = [l for l in lines_generator]
+        self.lines.extend([" ", " "])
+        self.clear()
+        self.index = 0
+    
+    def update(self, events):
+        n = len(self.lines)
+        lines_in_box = n if n < 3 else 3
+        
+        self.scroll_text_box(events, n)
+        
+        for i in range(lines_in_box):
+            line = self.font.render(self.lines[i + self.index], True, c.BROWN)
+            self.image.blit(line, (c.TILE_WIDTH + 3, (i + 1)*c.TILE_WIDTH + 2))
+    
+    def scroll_text_box(self, events, n_lines):
+        for event in events:
+            if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
+                if self.index < (n_lines - 3):
+                    self.index += 3
+                    self.clear()
+                else:
+                    self.index = 0
+                    self.clear()
+    
+    def clear(self):
+        self.image.blit(GFX['text_box'], (0, 0))
+        self.image.set_colorkey(c.WHITE)
+    
+    def get_lines(self, text, line_length):
+        start = 0
+        end = 0
+        while start + line_length < len(text) and end != -1:
+            end = text.rfind(" ", start, start + line_length + 1)
+            yield text[start:end]
+            start = end + 1
+        yield text[start:]
+    
+    
 

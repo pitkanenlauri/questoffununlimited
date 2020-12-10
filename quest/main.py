@@ -22,13 +22,14 @@ def main():
     
     while True:
         dt = clock.tick(c.FPS) / 32
-        for event in pg.event.get():
+        events = pg.event.get()
+        for event in events:
             if (event.type == pg.QUIT or 
                 event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 return
         keys = pg.key.get_pressed()
         # Update game state through GameStateManager.
-        gm.update(setup.window, keys, dt)
+        gm.update(setup.window, keys, dt, events)
         
         # Show fps in caption.
         fps = clock.get_fps()
