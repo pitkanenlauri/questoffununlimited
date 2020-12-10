@@ -2,7 +2,7 @@ import pygame as pg
 import random
 
 import constants as c
-from setup import GFX
+from setup import GFX, FONTS
 
 class Sprite(pg.sprite.Sprite):
     """
@@ -186,7 +186,7 @@ class Sprite(pg.sprite.Sprite):
                 tile1_rect = pg.Rect(tile1, (tw, tw))
                 tile2_rect = pg.Rect(tile2, (tw, tw))
                 blockers.extend([tile1_rect, tile2_rect])
-            elif self.rect.y & tw:
+            else:
                 tile1 = ( x, (y // tw) * tw )
                 tile2 = ( x, ((y + tw) // tw ) * tw)
                 tile1_rect = pg.Rect(tile1, (tw, tw))
@@ -323,5 +323,21 @@ class MapObject(pg.sprite.Sprite):
         image_number = self.counter // (self.animation_speed // self.frames)
         self.image = self.image_list[image_number]
         self.counter += 1
-        
+
+
+class TextBox(pg.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = GFX['text_box']
+        self.rect = self.image.get_rect(midbottom = (160, 240))
+        self.font = pg.font.Font(FONTS['SuperLegendBoy'], 8)
+    
+    def update(self, text):
+        line_length =  37
+        lines = [
+            text[i:i+line_length] for i in range(0, len(text), line_length)]
+        for i in range(len(lines)):
+            line = self.font.render(lines[i], True, c.BROWN)
+            self.image.blit(line, (c.TILE_WIDTH + 3, (i + 1) * c.TILE_WIDTH + 2))
+            
 

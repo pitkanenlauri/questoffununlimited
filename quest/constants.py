@@ -8,6 +8,7 @@ ANIMATION_SPEED = 16 # For map objects
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+BROWN = (68, 57, 52)
 
 # Map game states
 SANDY_COVE = 'sandy_cove'

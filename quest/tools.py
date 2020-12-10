@@ -175,4 +175,4 @@ class Portal:
         self.name = name
         self.rect = pg.Rect(x, y, c.TILE_WIDTH, c.TILE_WIDTH)
     
-
+    

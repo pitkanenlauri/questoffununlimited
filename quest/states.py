@@ -36,6 +36,9 @@ class MapState(State):
         self.portals = self.open_portals()
         self.map_objects = self.make_map_objects()
         self.map_items = self.make_map_items()
+        
+        # Test
+        self.text_box = s.TextBox()
     
     def make_player(self):
         layer = self.tmx_renderer.get_layer('start_points')
@@ -175,6 +178,10 @@ class MapState(State):
         
         if self.show_inventory:
             self.draw_inventory(window)
+            
+        # Test
+        self.text_box.update('In a hole in the ground there lived a hobbit. Not a nasty, dirty, wet hole, filled with the ends of worms...')
+        window.blit(self.text_box.image, self.text_box.rect)
         
         new = pg.transform.scale2x(window)
         window.blit(new, (0, 0))
