@@ -2,7 +2,7 @@ import pygame as pg
 
 import constants as c
 import sprites as s
-from tools import State, Camera, Portal
+from tools import State, Camera, Portal, Dialogue
 from setup import TMX, GFX, FONTS
 from tmx_renderer import Renderer
 
@@ -29,18 +29,15 @@ class MapState(State):
         self.map_image = self.tmx_renderer.render_map()
         self.map_rect = self.map_image.get_rect()
         self.camera = Camera(self.map_rect.width, self.map_rect.height)
-
+        self.text_box = s.TextBox()
+        
         self.player = self.make_player()
         self.sprites = self.make_sprites()
         self.blockers = self.make_blockers()
         self.portals = self.open_portals()
         self.map_objects = self.make_map_objects()
         self.map_items = self.make_map_items()
-        
-        # Test
-        self.text_box = s.TextBox()
-        hobbit = 'In a hole in the ground there lived a hobbit. Not a nasty, dirty, wet hole, filled with the ends of worms and an oozy smell, nor yet a dry, bare, sandy hole with nothing in it to sit down on or to eat: it was a hobbit-hole, and that means comfort.'
-        self.text_box.give_text(hobbit)
+        self.dialogues = self.load_dialogues()
         
     def make_player(self):
         layer = self.tmx_renderer.get_layer('start_points')
@@ -127,6 +124,16 @@ class MapState(State):
         
         return portals
     
+    def load_dialogues(self):
+        dialogues = []
+        layer = self.tmx_renderer.get_layer('dialogues')
+        
+        for obj in layer:
+            dialogue = Dialogue(obj.name, obj.x, obj.y, obj.properties)
+            dialogues.append(dialogue)
+        
+        return dialogues
+    
     def check_for_portals(self):
         for portal in self.portals:
             if self.player.rect.colliderect(portal.rect):
@@ -142,7 +149,15 @@ class MapState(State):
                     found_items.add(item.tiled_id)
                     self.inventory['gold'] += 1
                     item.kill()
-            
+    
+    def check_for_dialogue(self):
+        if not self.text_box.active:
+            for dialogue in self.dialogues:
+                if self.player.rect.colliderect(dialogue.rect):
+                    # TODO: check for active quests and assign dialogue accordinly.
+                    self.text_box.active = True
+                    self.text_box.give_text(dialogue.dict['normal'])
+    
     def make_map_state_dict(self):
         map_state_dict = {'normal': self.running_normally
         }
@@ -161,11 +176,10 @@ class MapState(State):
         self.map_objects.update()
         self.map_items.update()
         self.check_key_actions(keys)
+        self.check_for_dialogue()
+        self.text_box.update(events)
         self.update_window(window)
         self.check_for_portals()
-        
-        # Test
-        self.text_box.update(events)
 
     def update_window(self, window):
         window.blit(self.map_image, self.camera.apply(self.map_rect))
@@ -184,8 +198,8 @@ class MapState(State):
         if self.show_inventory:
             self.draw_inventory(window)
         
-        # Test
-        window.blit(self.text_box.image, self.text_box.rect)
+        if self.text_box.show:
+            window.blit(self.text_box.image, self.text_box.rect)
         
         new = pg.transform.scale2x(window)
         window.blit(new, (0, 0))

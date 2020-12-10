@@ -1,5 +1,6 @@
 import pygame as pg
 import os
+import copy
 
 import constants as c
 
@@ -176,3 +177,15 @@ class Portal:
         self.rect = pg.Rect(x, y, c.TILE_WIDTH, c.TILE_WIDTH)
     
     
+class Dialogue:
+    """
+    Class for storing dialogues and info needed to initiate them 
+    in the right time in the right place. (Place assigned in Tiled.)
+    """
+    def __init__(self, name, x, y, properties):
+        self.name = name
+        self.rect = pg.Rect(x, y, c.TILE_WIDTH, c.TILE_WIDTH)
+        self.dict = copy.deepcopy(properties)
+        
+        
+        

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="781">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="781">
  <tileset firstgid="1" source="overworld.tsx"/>
  <tileset firstgid="1441" source="objects.tsx"/>
  <tileset firstgid="2101" source="object_icons.tsx"/>
@@ -271,6 +271,7 @@
    </properties>
   </object>
  </objectgroup>
+ <objectgroup id="14" name="dialogues"/>
  <objectgroup id="6" name="blockers">
   <object id="1" gid="2371" x="784" y="688" width="16" height="16"/>
   <object id="2" gid="2371" x="768" y="688" width="16" height="16"/>

@@ -335,6 +335,8 @@ class TextBox(pg.sprite.Sprite):
         self.index = 0
         self.line_length = 37
         self.lines = []
+        self.active = False
+        self.show = False
     
     def give_text(self, text):
         lines_generator = self.get_lines(text, self.line_length)
@@ -344,24 +346,32 @@ class TextBox(pg.sprite.Sprite):
         self.index = 0
     
     def update(self, events):
-        n = len(self.lines)
-        lines_in_box = n if n < 3 else 3
-        
-        self.scroll_text_box(events, n)
-        
-        for i in range(lines_in_box):
-            line = self.font.render(self.lines[i + self.index], True, c.BROWN)
-            self.image.blit(line, (c.TILE_WIDTH + 3, (i + 1)*c.TILE_WIDTH + 2))
+        if self.active:
+            n = len(self.lines)
+            lines_in_box = n if n < 3 else 3
+            
+            self.scroll_text_box(events, n)
+            
+            for i in range(lines_in_box):
+                line = self.font.render(self.lines[i + self.index], True, c.BROWN)
+                self.image.blit(line, (c.TILE_WIDTH + 3, (i + 1)*c.TILE_WIDTH + 2))
     
     def scroll_text_box(self, events, n_lines):
         for event in events:
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
-                if self.index < (n_lines - 3):
-                    self.index += 3
-                    self.clear()
+                if self.show:
+                    if self.index < (n_lines - 3) and n_lines > 5:
+                        self.index += 3
+                        if self.index > n_lines - 3:
+                            self.index = n_lines - 3
+                        self.clear()
+                    else:
+                        self.index = 0
+                        self.clear()
+                        self.active = False
+                        self.show = False
                 else:
-                    self.index = 0
-                    self.clear()
+                    self.show = True
     
     def clear(self):
         self.image.blit(GFX['text_box'], (0, 0))
