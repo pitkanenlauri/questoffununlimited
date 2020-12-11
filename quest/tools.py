@@ -1,6 +1,5 @@
 import pygame as pg
 import os
-import copy
 
 import constants as c
 
@@ -50,7 +49,7 @@ class State:
         self.done = False
         self.game_data = None
         self.next = None
-        self.previous = None
+        self.previous = 'start'
     
     def start_up(self, game_data):
         self.game_data = game_data
@@ -82,12 +81,9 @@ def create_game_data_dict():
     
     # Data for quests.
     ##################################################
-    chicken_rescue = {'active': False,
-                      }
+    chicken_rescue = {}
     
-    chicken_catch = {'active': False,
-                     'level': 1,
-                     'chickens_catched': set()
+    chicken_catch = {'chickens_catched': set()
                      }
     
     quests = {'chicken_rescue': chicken_rescue,
@@ -185,7 +181,6 @@ class Dialogue:
     def __init__(self, name, x, y, properties):
         self.name = name
         self.rect = pg.Rect(x, y, c.TILE_WIDTH, c.TILE_WIDTH)
-        self.dict = copy.deepcopy(properties)
-        
+        self.dict = properties
         
         

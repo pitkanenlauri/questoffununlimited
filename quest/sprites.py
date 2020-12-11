@@ -340,10 +340,8 @@ class TextBox(pg.sprite.Sprite):
     
     def give_text(self, text):
         lines_generator = self.get_lines(text, self.line_length)
-        self.lines = [l for l in lines_generator]
+        self.lines = [line for line in lines_generator]
         self.lines.extend([" ", " "])
-        self.clear()
-        self.index = 0
     
     def update(self, events):
         if self.active:
@@ -353,8 +351,10 @@ class TextBox(pg.sprite.Sprite):
             self.scroll_text_box(events, n)
             
             for i in range(lines_in_box):
-                line = self.font.render(self.lines[i + self.index], True, c.BROWN)
-                self.image.blit(line, (c.TILE_WIDTH + 3, (i + 1)*c.TILE_WIDTH + 2))
+                line = self.font.render(
+                    self.lines[i + self.index], True, c.BROWN)
+                self.image.blit(
+                    line, (c.TILE_WIDTH + 3, (i + 1)*c.TILE_WIDTH + 2))
     
     def scroll_text_box(self, events, n_lines):
         for event in events:
@@ -372,6 +372,8 @@ class TextBox(pg.sprite.Sprite):
                         self.show = False
                 else:
                     self.show = True
+                    self.clear()
+                    self.index = 0
     
     def clear(self):
         self.image.blit(GFX['text_box'], (0, 0))
@@ -387,4 +389,3 @@ class TextBox(pg.sprite.Sprite):
         yield text[start:]
     
     
-

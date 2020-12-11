@@ -28,6 +28,7 @@ class MapState(State):
         self.tmx_renderer = Renderer(self.tmx_map)
         self.map_image = self.tmx_renderer.render_map()
         self.map_rect = self.map_image.get_rect()
+        
         self.camera = Camera(self.map_rect.width, self.map_rect.height)
         self.text_box = s.TextBox()
         
@@ -45,11 +46,7 @@ class MapState(State):
         for obj in layer:
             if obj.name == self.previous:
                 player = s.Player(obj.x, obj.y, obj.properties['direction'])
-            
-            if obj.name == 'start':
-                player = s.Player(obj.x, obj.y, obj.properties['direction'])
-
-        return player
+                return player
     
     def make_sprites(self):
         sprites = pg.sprite.Group()
@@ -151,12 +148,17 @@ class MapState(State):
                     item.kill()
     
     def check_for_dialogue(self):
-        if not self.text_box.active:
-            for dialogue in self.dialogues:
-                if self.player.rect.colliderect(dialogue.rect):
-                    # TODO: check for active quests and assign dialogue accordinly.
-                    self.text_box.active = True
-                    self.text_box.give_text(dialogue.dict['normal'])
+        collided = False
+        for dialogue in self.dialogues:
+            if self.player.rect.colliderect(dialogue.rect):
+                # TODO Check for active quests and assign dialogue accordingly.
+                self.text_box.active = True
+                self.text_box.give_text(dialogue.dict['normal'])
+                collided = True
+        
+        if not collided:
+            self.text_box.active = False
+            self.text_box.show = False
     
     def make_map_state_dict(self):
         map_state_dict = {'normal': self.running_normally
@@ -165,22 +167,22 @@ class MapState(State):
     
     def update(self, window, keys, dt, events):
         map_state_function = self.map_state[self.state]
-        map_state_function(window, keys, dt, events)    
+        map_state_function(window, keys, dt, events)
     
     def running_normally(self, window, keys, dt, events):
         self.player.update(keys, dt)
         self.sprites.update(dt)
-        self.handle_collisions()
-        self.check_for_items()
-        self.camera.update(self.player.rect)
         self.map_objects.update()
         self.map_items.update()
-        self.check_key_actions(keys)
-        self.check_for_dialogue()
         self.text_box.update(events)
-        self.update_window(window)
+        self.handle_collisions()
+        self.check_for_items()
+        self.check_for_key_actions(keys)
+        self.check_for_dialogue()
         self.check_for_portals()
-
+        self.camera.update(self.player.rect)
+        self.update_window(window)
+        
     def update_window(self, window):
         window.blit(self.map_image, self.camera.apply(self.map_rect))
         
@@ -258,7 +260,7 @@ class MapState(State):
             window.blit(chickens_catched, (tw + x, (i * tw) + y))
             i += 1
     
-    def check_key_actions(self, keys):
+    def check_for_key_actions(self, keys):
         if keys[pg.K_TAB]:
             self.show_inventory = True
         if keys[pg.K_q]:

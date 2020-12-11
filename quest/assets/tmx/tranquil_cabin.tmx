@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="61">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="62">
  <tileset firstgid="1" source="house.tsx"/>
  <tileset firstgid="1001" source="object_icons.tsx"/>
  <layer id="7" name="Tile Layer 1" width="20" height="15">
@@ -146,7 +146,13 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="18" name="dialogues"/>
+ <objectgroup id="18" name="dialogues">
+  <object id="61" name="uncle" gid="1247" x="208" y="128" width="16" height="16">
+   <properties>
+    <property name="normal" value="Hello!"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="16" name="map_objects"/>
  <objectgroup id="17" name="map_items"/>
 </map>
