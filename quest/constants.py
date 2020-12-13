@@ -14,6 +14,3 @@ BROWN = (68, 57, 52)
 SANDY_COVE = 'sandy_cove'
 MYSTERIOUS_CAVE = 'mysterious_cave'
 TRANQUIL_CABIN = 'tranquil_cabin'
-
-# Quest state of Sandy Cove
-CHICKEN_CATCH = 'chicken_catch'

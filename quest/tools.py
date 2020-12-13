@@ -72,42 +72,31 @@ def create_game_data_dict():
     """
     # Items that player has collected and is carrying.
     ##################################################
-    player_items = {'gold': 0,
-                    'chickens': {'show': False,
-                                 'amount': 0,
-                                 'max': 0},
-                    'found_items': set()
-                    }
+    player_data = {'gold': 0,
+                   'chickens': {'show': True,
+                                'amount': 0,
+                                'max': 0},
+                   'found_items': set(),
+                   'catched_chickens': set()
+                   }
     
     # Data for quests.
     ##################################################
     chicken_rescue = {}
     
-    chicken_catch = {'chickens_catched': set()
-                     }
+    chicken_catch = {}
     
     quests = {'chicken_rescue': chicken_rescue,
               'chicken_catch': chicken_catch
               }
     
-    # Data for map states.
+    # Compile the above into game data dictionary.
     ##################################################
-    sandy_cove = {}
-    mysterious_cave = {}
-    tranquil_cabin = {}
-    
-    map_data = {c.SANDY_COVE: sandy_cove,
-                c.MYSTERIOUS_CAVE: mysterious_cave,
-                c.TRANQUIL_CABIN: tranquil_cabin
-                }
-    
-    # Compile the above into game_data dictionary
-    ##################################################
-    data_dict = {'player_inventory': player_items,
-                 'quest_data': quests,
-                 'map_data': map_data
-                 }
-    return data_dict
+    game_data_dict = {'player_data': player_data,
+                      'quest_data': quests,
+                      'active_quests': ['chicken_rescue', 'chicken_catch']
+                      }
+    return game_data_dict
 
 def load_all_gfx(directory, colorkey=c.WHITE, accept=('.png')):
     graphics = {}
@@ -183,4 +172,12 @@ class Dialogue:
         self.rect = pg.Rect(x, y, c.TILE_WIDTH, c.TILE_WIDTH)
         self.dict = properties
         
+class Quest:
+    def __init__(self, game_data):
+        self.game_data = game_data
+        
+        pass
+
+
+
         

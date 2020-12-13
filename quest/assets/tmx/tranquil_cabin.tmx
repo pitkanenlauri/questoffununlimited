@@ -149,7 +149,7 @@
  <objectgroup id="18" name="dialogues">
   <object id="61" name="uncle" gid="1247" x="208" y="128" width="16" height="16">
    <properties>
-    <property name="normal" value="Hello!"/>
+    <property name="normal" value="It began with the forging of the Great Rings. Three were given to the Elves, immortal, wisest and fairest of all beings. Seven to the Dwarf-Lords, great miners and craftsmen of the mountain halls. And nine, nine rings were gifted to the race of Men, who above all else desire power. For within these rings was bound the strength and the will to govern each race. But they were all of them deceived, for another ring was made. Deep in the land of Mordor, in the Fires of Mount Doom, the Dark Lord Sauron forged a master ring, and into this ring he poured his cruelty, his malice and his will to dominate all life. One ring to rule them all, one ring to find them, One ring to bring them all, and in the darkness bind them; In the Land of Mordor where the shadows lie."/>
    </properties>
   </object>
  </objectgroup>

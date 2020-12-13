@@ -23,7 +23,7 @@ class MapState(State):
         self.map_state = self.make_map_state_dict()
         
         self.show_inventory = True
-        self.inventory = self.game_data['player_inventory']
+        self.inventory = self.game_data['player_data']
         
         self.tmx_renderer = Renderer(self.tmx_map)
         self.map_image = self.tmx_renderer.render_map()
@@ -36,8 +36,8 @@ class MapState(State):
         self.sprites = self.make_sprites()
         self.blockers = self.make_blockers()
         self.portals = self.open_portals()
-        self.map_objects = self.make_map_objects()
         self.map_items = self.make_map_items()
+        self.map_objects = self.make_map_objects()
         self.dialogues = self.load_dialogues()
         
     def make_player(self):
@@ -47,7 +47,7 @@ class MapState(State):
             if obj.name == self.previous:
                 player = s.Player(obj.x, obj.y, obj.properties['direction'])
                 return player
-    
+        
     def make_sprites(self):
         sprites = pg.sprite.Group()
         layer = self.tmx_renderer.get_layer('sprites')
@@ -214,6 +214,14 @@ class MapState(State):
         all_sprite_blockers = []
         
         for sprite in self.sprites:
+            
+            if sprite.name == 'chicken_move':
+                if self.player.rect.colliderect(sprite.rect):
+                    self.inventory['catched_chickens'].add(sprite.tiled_id)
+                    self.inventory['chickens']['amount'] += 1
+                    sprite.kill()
+                    continue
+            
             all_sprite_blockers.extend(sprite.blockers)
         
         for blocker in self.blockers:
@@ -266,38 +274,4 @@ class MapState(State):
         if keys[pg.K_q]:
             self.show_inventory = False
 
-
-class ChickenCatch(MapState):
-    def __init__(self, name):
-        super().__init__(name)
-    
-    def start_up(self, game_data):
-        super().start_up(game_data)
-        self.chickens_catched = (
-            game_data['quest_data']['chicken_catch']['chickens_catched'])
-        self.make_chickens()
-        
-    def make_chickens(self):
-        max_chickens = 0
-        layer = self.tmx_renderer.get_layer('runaway_chickens')
-        
-        for obj in layer:
-            max_chickens += 1
-            if obj.id not in self.chickens_catched:
-                chicken = s.Chicken(obj.x, obj.y, obj.properties['direction'],
-                                  obj.id)
-                self.sprites.add(chicken)
-                
-        self.inventory['chickens']['max'] = max_chickens
-    
-    def handle_collisions(self):
-        for sprite in self.sprites:
-            if sprite.name == 'chicken_move':
-                if self.player.rect.colliderect(sprite.rect):
-                    self.chickens_catched.add(sprite.tiled_id)
-                    self.inventory['chickens']['amount'] += 1
-                    sprite.kill()
-        
-        super().handle_collisions()
-    
 
