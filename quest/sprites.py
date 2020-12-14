@@ -254,16 +254,17 @@ class Mover(Sprite):
 
 
 class Chicken(Sprite):
-    def __init__(self, x, y, direction, tiled_id=None):
-        super().__init__('chicken_move', x, y, direction)
+    def __init__(self, x, y, direction, tiled_id=None, color='chicken'):
+        super().__init__(color + '_move', x, y, direction)
         self.tiled_id = tiled_id
         self.speed = 0.5
         self.moves = ['up', 'down', 'left', 'right']
-        self.rest_sheet_dict = self.create_spritesheet_dict('chicken_rest')
+        self.rest_sheet_dict = self.create_spritesheet_dict(color + '_rest')
         self.rest_animation_dict = self.create_animation_dict(
             self.rest_sheet_dict)
         self.rested = False
         self.rest_counter = 0
+        self.color = color
 
     def auto_moving(self):
         self.begin_moving(self.moves[random.randint(0, 3)])

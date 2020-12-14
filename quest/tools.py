@@ -73,28 +73,28 @@ def create_game_data_dict():
     # Items that player has collected and is carrying.
     ##################################################
     player_data = {'gold': 0,
-                   'chickens': {'show': True,
+                   'chickens': {'show': False,
                                 'amount': 0,
-                                'max': 0},
+                                'max': 0,
+                                'catchable': False,
+                                'rescue': False,
+                                'catch': False},
                    'found_items': set(),
                    'catched_chickens': set()
                    }
     
     # Data for quests.
     ##################################################
-    chicken_rescue = {}
-    
-    chicken_catch = {}
-    
-    quests = {'chicken_rescue': chicken_rescue,
-              'chicken_catch': chicken_catch
+    quests = {'chicken_rescue': ChickenRescue(),
+              'chicken_catch': ChickenCatch()
               }
     
     # Compile the above into game data dictionary.
     ##################################################
     game_data_dict = {'player_data': player_data,
                       'quest_data': quests,
-                      'active_quests': ['chicken_rescue', 'chicken_catch']
+                      'active_quests': {'chicken_rescue'},
+                      'current_map': None
                       }
     return game_data_dict
 
@@ -173,11 +173,69 @@ class Dialogue:
         self.dict = properties
         
 class Quest:
-    def __init__(self, game_data):
+    def __init__(self):
+        self.active = True
+        self.completed = False
+        self.name = None
+    
+    def open(self, game_data):
         self.game_data = game_data
-        
+        pass
+    
+    def update(self):
+        pass
+    
+    def deactivate(self):
         pass
 
+class ChickenRescue(Quest):
+    def __init__(self):
+        super().__init__()
+        self.name = 'chicken_rescue'
+    
+    def open(self, game_data):
+        game_data['player_data']['chickens']['show'] = True
+        game_data['player_data']['chickens']['max'] = 3
+        if game_data['current_map'] == c.MYSTERIOUS_CAVE:
+            game_data['player_data']['chickens']['catchable'] = True
+            game_data['player_data']['chickens']['rescue'] = True
+        self.game_data = game_data
+        
+    def update(self):
+        if not self.completed:
+            if self.game_data['player_data']['chickens']['amount'] == 3:
+                self.completed = True
+    
+    def deactivate(self):
+        self.active = False
+        self.game_data['player_data']['chickens']['catchable'] = False
+        self.game_data['player_data']['chickens']['rescue'] = False
+        self.game_data['player_data']['chickens']['show'] = False
 
+class ChickenCatch(Quest):
+    def __init__(self):
+        super().__init__()
+        self.name = 'chicken_catch'
+    
+    def open(self, game_data):
+        game_data['player_data']['chickens']['show'] = True
+        game_data['player_data']['chickens']['max'] = 23
+        if game_data['current_map'] == c.SANDY_COVE:
+            game_data['player_data']['chickens']['catchable'] = True
+            game_data['player_data']['chickens']['catch'] = True
+        self.game_data = game_data
+    
+    def update(self):
+        if not self.completed:
+            if self.game_data['player_data']['chickens']['amount'] == 23:
+                self.completed = True
+    
+    def deactivate(self):
+        self.active = False
+        self.game_data['player_data']['chickens']['catchable'] = False
+        self.game_data['player_data']['chickens']['catch'] = False
+        self.game_data['player_data']['chickens']['show'] = False
+        self.game_data['player_data']['catched_chickens'].clear()
+        
 
         

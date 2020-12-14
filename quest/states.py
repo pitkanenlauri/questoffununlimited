@@ -21,6 +21,7 @@ class MapState(State):
         self.game_data = game_data
         self.state = 'normal'
         self.map_state = self.make_map_state_dict()
+        self.game_data['current_map'] = self.name
         
         self.show_inventory = True
         self.inventory = self.game_data['player_data']
@@ -32,12 +33,14 @@ class MapState(State):
         self.camera = Camera(self.map_rect.width, self.map_rect.height)
         self.text_box = s.TextBox()
         
+        self.quests = self.open_active_quests()
+        
         self.player = self.make_player()
         self.sprites = self.make_sprites()
         self.blockers = self.make_blockers()
         self.portals = self.open_portals()
-        self.map_items = self.make_map_items()
         self.map_objects = self.make_map_objects()
+        self.map_items = self.make_map_items()
         self.dialogues = self.load_dialogues()
         
     def make_player(self):
@@ -47,7 +50,7 @@ class MapState(State):
             if obj.name == self.previous:
                 player = s.Player(obj.x, obj.y, obj.properties['direction'])
                 return player
-        
+    
     def make_sprites(self):
         sprites = pg.sprite.Group()
         layer = self.tmx_renderer.get_layer('sprites')
@@ -63,9 +66,24 @@ class MapState(State):
                 sprites.add(sprite)
 
             if obj.name == 'chicken':
-                sprite = s.Chicken(obj.x, obj.y, obj.properties['direction'])
-                sprites.add(sprite)
-                
+                if self.inventory['chickens']['catch']:
+                    if obj.id not in self.inventory['catched_chickens']:
+                        sprite = s.Chicken(
+                            obj.x, obj.y, obj.properties['direction'], obj.id)
+                        sprites.add(sprite)
+                else:
+                    sprite = s.Chicken(obj.x, obj.y, obj.properties['direction'])
+                    sprites.add(sprite)
+            
+            if obj.name == 'chicken_lost':
+                if self.inventory['chickens']['rescue']:
+                    if obj.id not in self.inventory['found_items']:
+                        sprite = s.Chicken(
+                            obj.x, obj.y, obj.properties['direction'], 
+                                          obj.id,
+                                          obj.properties['color'])
+                        sprites.add(sprite)
+            
             if obj.name == 'uncle':
                 sprite = s.Sprite(obj.name, obj.x, obj.y)
                 sprites.add(sprite)
@@ -97,11 +115,10 @@ class MapState(State):
     
     def make_map_items(self):
         map_items = pg.sprite.Group()
-        found_items = self.inventory['found_items']
         layer = self.tmx_renderer.get_layer('map_items')
         
         for obj in layer:
-            if obj.id not in found_items:
+            if obj.id not in self.inventory['found_items']:
                 item = s.MapObject(
                     obj.name, obj.x, obj.y, obj.properties['frames'], 
                                             obj.properties['frame_width'],
@@ -180,6 +197,7 @@ class MapState(State):
         self.check_for_key_actions(keys)
         self.check_for_dialogue()
         self.check_for_portals()
+        self.check_quest_progress()
         self.camera.update(self.player.rect)
         self.update_window(window)
         
@@ -215,11 +233,8 @@ class MapState(State):
         
         for sprite in self.sprites:
             
-            if sprite.name == 'chicken_move':
-                if self.player.rect.colliderect(sprite.rect):
-                    self.inventory['catched_chickens'].add(sprite.tiled_id)
-                    self.inventory['chickens']['amount'] += 1
-                    sprite.kill()
+            if self.inventory['chickens']['catchable']:
+                if self.chicken_catched(sprite):
                     continue
             
             all_sprite_blockers.extend(sprite.blockers)
@@ -273,5 +288,39 @@ class MapState(State):
             self.show_inventory = True
         if keys[pg.K_q]:
             self.show_inventory = False
-
-
+    
+    def open_active_quests(self):
+        quests = []
+        for quest in self.game_data['active_quests']:
+            active_quest = self.game_data['quest_data'][quest]
+            active_quest.open(self.game_data)
+            quests.append(active_quest)
+        
+        return quests
+    
+    def check_quest_progress(self):
+        for quest in self.quests:
+            if quest.active:
+                quest.update()
+                if not quest.active:
+                    self.game_data['active_quests'].remove(quest.name)
+                
+    def chicken_catched(self, sprite):
+        if (sprite.name == 'chicken_move' and self.inventory['chickens']['catch']
+            and self.name == c.SANDY_COVE):
+            if self.player.rect.colliderect(sprite.rect):
+                self.inventory['catched_chickens'].add(sprite.tiled_id)
+                self.inventory['chickens']['amount'] += 1
+                sprite.kill()
+                return True
+        
+        if (sprite.name == 'red_move' or 
+            sprite.name == 'green_move' or sprite.name == 'blue_move'):
+            if self.player.rect.colliderect(sprite.rect):
+                self.inventory['found_items'].add(sprite.tiled_id)
+                self.inventory['chickens']['amount'] += 1
+                sprite.kill()
+                return True
+        
+        return False
+    
