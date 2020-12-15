@@ -799,7 +799,7 @@
  </objectgroup>
  <objectgroup id="9" name="portals">
   <object id="514" name="mysterious_cave" gid="2340" x="496" y="48" width="16" height="16"/>
-  <object id="780" name="tranquil_cabin" gid="2340" x="336" y="672" width="16" height="16"/>
+  <object id="780" name="tranquil_cabin" type="door" gid="2340" x="336" y="672" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="8" name="sprites">
   <object id="498" name="chicken" gid="2331" x="416" y="656" width="16" height="16">

@@ -3,7 +3,7 @@ import pygame as pg
 import constants as c
 import sprites as s
 from tools import State, Camera, Portal, Dialogue
-from setup import TMX, GFX, FONTS
+from setup import TMX, GFX, FONTS, MUSIC, play_sfx
 from tmx_renderer import Renderer
 
 class MapState(State):
@@ -16,12 +16,23 @@ class MapState(State):
         self.name = name
         self.tmx_map = TMX[name]
         self.font = pg.font.Font(FONTS['SuperLegendBoy'], 8)
+        self.music_title = None
+        self.previous_music = None
+        self.music = None
+        self.volume = None
+        
+        # TODO Do this in the menu when it is implemented.
+        if self.name == c.SANDY_COVE:
+            self.music = MUSIC['cove']
+            self.music_title = 'cove'
+            self.volume = 0.2
     
     def start_up(self, game_data):
         self.game_data = game_data
         self.state = 'normal'
         self.map_state = self.make_map_state_dict()
         self.game_data['current_map'] = self.name
+        self.music, self.volume = self.set_music()
         
         self.show_inventory = True
         self.inventory = self.game_data['player_data']
@@ -119,6 +130,12 @@ class MapState(State):
         
         for obj in layer:
             if obj.id not in self.inventory['found_items']:
+                if obj.name == 'hidden':
+                    hidden = s.HiddenMapObject(
+                        obj.x, obj.y, obj.name, obj.type, obj.id)
+                    map_items.add(hidden)
+                    continue
+                
                 item = s.MapObject(
                     obj.name, obj.x, obj.y, obj.properties['frames'], 
                                             obj.properties['frame_width'],
@@ -133,7 +150,7 @@ class MapState(State):
         layer = self.tmx_renderer.get_layer('portals')
         
         for obj in layer:
-            portal = Portal(obj.name, obj.x, obj.y)
+            portal = Portal(obj.name, obj.x, obj.y, obj.type)
             portals.append(portal)
         
         return portals
@@ -153,6 +170,8 @@ class MapState(State):
             if self.player.rect.colliderect(portal.rect):
                 self.next = portal.name
                 self.done = True
+                if portal.sound == 'door':
+                    play_sfx('door')
     
     def check_for_items(self):
         found_items = self.inventory['found_items']
@@ -160,23 +179,49 @@ class MapState(State):
         for item in self.map_items:
             if self.player.rect.colliderect(item.rect):
                 if item.name == 'coin':
+                    play_sfx('coin')
                     found_items.add(item.tiled_id)
                     self.inventory['gold'] += 1
                     item.kill()
-    
+                if item.name == 'hidden':
+                    if item.obj_type == 'monster1':
+                        play_sfx('monster1', 1.0)
+                        found_items.add(item.tiled_id)
+                        item.kill()
+                    if item.obj_type == 'monster2':
+                        play_sfx('monster2', 1.0)
+                        found_items.add(item.tiled_id)
+                        item.kill()
+                    
     def check_for_dialogue(self):
         collided = False
         for dialogue in self.dialogues:
             if self.player.rect.colliderect(dialogue.rect):
-                # TODO Check for active quests and assign dialogue accordingly.
+                if self.check_if_quest_dialog(dialogue):
+                    pass
+                else:
+                    self.text_box.give_text(dialogue.dict['normal'])
+                
                 self.text_box.active = True
-                self.text_box.give_text(dialogue.dict['normal'])
                 collided = True
         
         if not collided:
             self.text_box.active = False
             self.text_box.show = False
     
+    def check_if_quest_dialog(self, dialogue):
+        for quest in self.quests:
+            if (quest.name in dialogue.dict and 
+                quest.name in self.game_data['active_quests']):
+                i = self.game_data['quest_data'][quest.name]['i']
+                dialog = self.game_data['quest_data'][quest.name]['dialogs'][i]
+                self.text_box.give_text(dialogue.dict[dialog])
+                if quest.completed:
+                    quest.active = False
+                    self.game_data['active_quests'].remove(quest.name)
+                return True
+        return False
+        
     def make_map_state_dict(self):
         map_state_dict = {'normal': self.running_normally
         }
@@ -208,6 +253,8 @@ class MapState(State):
             window.blit(obj.image, self.camera.apply(obj.rect))
         
         for item in self.map_items:
+            if item.name == 'hidden':
+                continue
             window.blit(item.image, self.camera.apply(item.rect))
         
         window.blit(self.player.image, self.camera.apply(self.player.rect))
@@ -289,10 +336,27 @@ class MapState(State):
         if keys[pg.K_q]:
             self.show_inventory = False
     
+    def set_music(self):
+        """
+        Set music based on states name.
+        """
+        music_dict = {c.SANDY_COVE: ('cove', 0.2),
+                      c.MYSTERIOUS_CAVE: ('cave', 0.4),
+                      c.TRANQUIL_CABIN: ('cabin', 0.1)
+        }
+        
+        if self.name in music_dict:
+            music = music_dict[self.name][0]
+            volume = music_dict[self.name][1]
+            self.music_title = music
+            return MUSIC[music], volume
+        else:
+            return None, None
+    
     def open_active_quests(self):
         quests = []
         for quest in self.game_data['active_quests']:
-            active_quest = self.game_data['quest_data'][quest]
+            active_quest = self.game_data['quest_data'][quest]['class_name']
             active_quest.open(self.game_data)
             quests.append(active_quest)
         
@@ -302,13 +366,18 @@ class MapState(State):
         for quest in self.quests:
             if quest.active:
                 quest.update()
-                if not quest.active:
-                    self.game_data['active_quests'].remove(quest.name)
-                
+    
+    def clean_up(self):
+        for quest in self.quests:
+            if quest.name not in self.game_data['active_quests']:
+                quest.deactivate()
+        return State.clean_up(self)
+    
     def chicken_catched(self, sprite):
         if (sprite.name == 'chicken_move' and self.inventory['chickens']['catch']
             and self.name == c.SANDY_COVE):
             if self.player.rect.colliderect(sprite.rect):
+                play_sfx('chicken')
                 self.inventory['catched_chickens'].add(sprite.tiled_id)
                 self.inventory['chickens']['amount'] += 1
                 sprite.kill()
@@ -317,6 +386,7 @@ class MapState(State):
         if (sprite.name == 'red_move' or 
             sprite.name == 'green_move' or sprite.name == 'blue_move'):
             if self.player.rect.colliderect(sprite.rect):
+                play_sfx('chicken')
                 self.inventory['found_items'].add(sprite.tiled_id)
                 self.inventory['chickens']['amount'] += 1
                 sprite.kill()

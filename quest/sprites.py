@@ -2,7 +2,7 @@ import pygame as pg
 import random
 
 import constants as c
-from setup import GFX, FONTS
+from setup import GFX, FONTS, play_sfx
 
 class Sprite(pg.sprite.Sprite):
     """
@@ -128,8 +128,12 @@ class Sprite(pg.sprite.Sprite):
             if self.pixels_moved >= c.TILE_WIDTH:
                 self.begin_resting()
                 self.pixels_moved = 0
+                self.do_step()
 
     def auto_moving(self):
+        pass
+    
+    def do_step(self):
         pass
     
     def begin_resting(self):
@@ -199,6 +203,7 @@ class Sprite(pg.sprite.Sprite):
 class Player(Sprite):
     def __init__(self, x, y, direction):
         super().__init__('player', x, y, direction)
+        self.right = True
 
     def update(self, keys, dt):
         self.check_for_input(keys)
@@ -219,6 +224,14 @@ class Player(Sprite):
                 self.begin_moving('left')
             elif keys[pg.K_RIGHT] or keys[pg.K_d]:
                 self.begin_moving('right')
+    
+    def do_step(self):
+        if self.right:
+            play_sfx('step_grass_r')
+            self.right = False
+        else:
+            play_sfx('step_grass_l')
+            self.right = True
 
 
 class Wanderer(Sprite):
@@ -326,6 +339,20 @@ class MapObject(pg.sprite.Sprite):
         self.counter += 1
 
 
+class HiddenMapObject(pg.sprite.Sprite):
+    def __init__(self, x, y, name, obj_type, tiled_id):
+        super().__init__()
+        self.name = name
+        self.obj_type = obj_type
+        self.tiled_id = tiled_id
+        self.image = pg.Surface([c.TILE_WIDTH, c.TILE_WIDTH])
+        self.image.fill(c.BLACK)
+        self.rect = self.image.get_rect(left=x, top=y)
+    
+    def update(self):
+        pass
+    
+
 class TextBox(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -366,15 +393,18 @@ class TextBox(pg.sprite.Sprite):
                         if self.index > n_lines - 3:
                             self.index = n_lines - 3
                         self.clear()
+                        play_sfx('text_flip')
                     else:
                         self.index = 0
                         self.clear()
                         self.active = False
                         self.show = False
+                        play_sfx('text_close')
                 else:
                     self.show = True
                     self.clear()
                     self.index = 0
+                    play_sfx('text_open')
     
     def clear(self):
         self.image.blit(GFX['text_box'], (0, 0))

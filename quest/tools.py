@@ -20,6 +20,7 @@ class GameStatesManager:
         self.state_dict = state_dict
         self.state_name = start_state
         self.state = self.state_dict[self.state_name]
+        self.set_music()
     
     def update(self, window, keys, dt, events):
         """
@@ -36,10 +37,24 @@ class GameStatesManager:
         and start_up for new state. (Most importantly passing on game data.)
         """
         previous, self.state_name = self.state_name, self.state.next
+        previous_music = self.state.music_title
         game_data = self.state.clean_up()
         self.state = self.state_dict[self.state_name]
         self.state.previous = previous
+        self.state.previous_music = previous_music
         self.state.start_up(game_data)
+        self.set_music()
+    
+    def set_music(self):
+        """
+        Play correct music for the state.
+        """
+        if self.state.music_title == self.state.previous_music:
+            pass
+        elif self.state.music:
+            pg.mixer.music.load(self.state.music)
+            pg.mixer.music.set_volume(self.state.volume)
+            pg.mixer.music.play(-1)
         
 class State:
     """
@@ -85,8 +100,20 @@ def create_game_data_dict():
     
     # Data for quests.
     ##################################################
-    quests = {'chicken_rescue': ChickenRescue(),
-              'chicken_catch': ChickenCatch()
+    chicken_rescue = {'class_name': ChickenRescue(),
+                      'i': 0,
+                      'dialogs': {0: 'start',
+                                  1: 'complete'}
+    }
+    
+    chicken_catch = {'class_name': ChickenCatch(),
+                     'i': 0,
+                     'dialogs': {0: 'run_away',
+                                 1: 'thanks'}
+    }
+    
+    quests = {'chicken_rescue': chicken_rescue,
+              'chicken_catch': chicken_catch
               }
     
     # Compile the above into game data dictionary.
@@ -98,7 +125,7 @@ def create_game_data_dict():
                       }
     return game_data_dict
 
-def load_all_gfx(directory, colorkey=c.WHITE, accept=('.png')):
+def load_all_gfx(directory, colorkey=c.WHITE, accept=('.png', 'jpg', 'bmp')):
     graphics = {}
     for pic in os.listdir(directory):
         name, ext = os.path.splitext(pic)
@@ -122,6 +149,17 @@ def load_all_tmx(directory, accept=('.tmx')):
 
 def load_all_fonts(directory, accept=('.ttf')):
     return load_all_tmx(directory, accept)
+
+def load_all_music(directory, accept=('.mp3', '.ogg')):
+    return load_all_tmx(directory, accept)
+
+def load_all_sfx(directory, accept=('.wav','.ogg',)):
+    effects = {}
+    for fx in os.listdir(directory):
+        name, ext = os.path.splitext(fx)
+        if ext.lower() in accept:
+            effects[name] = pg.mixer.Sound(os.path.join(directory, fx))
+    return effects
 
 
 class Camera:
@@ -157,9 +195,10 @@ class Portal:
     """
     Used for storing the transportation points between maps.
     """
-    def __init__(self, name, x, y):
+    def __init__(self, name, x, y, sound):
         self.name = name
         self.rect = pg.Rect(x, y, c.TILE_WIDTH, c.TILE_WIDTH)
+        self.sound = sound
     
     
 class Dialogue:
@@ -172,6 +211,7 @@ class Dialogue:
         self.rect = pg.Rect(x, y, c.TILE_WIDTH, c.TILE_WIDTH)
         self.dict = properties
         
+
 class Quest:
     def __init__(self):
         self.active = True
@@ -188,6 +228,7 @@ class Quest:
     def deactivate(self):
         pass
 
+
 class ChickenRescue(Quest):
     def __init__(self):
         super().__init__()
@@ -201,16 +242,21 @@ class ChickenRescue(Quest):
             game_data['player_data']['chickens']['rescue'] = True
         self.game_data = game_data
         
+        
     def update(self):
         if not self.completed:
             if self.game_data['player_data']['chickens']['amount'] == 3:
                 self.completed = True
+                self.game_data['quest_data'][self.name]['i'] = 1
     
     def deactivate(self):
         self.active = False
         self.game_data['player_data']['chickens']['catchable'] = False
         self.game_data['player_data']['chickens']['rescue'] = False
         self.game_data['player_data']['chickens']['show'] = False
+        self.game_data['player_data']['chickens']['amount'] = 0
+        self.game_data['active_quests'].add('chicken_catch')
+
 
 class ChickenCatch(Quest):
     def __init__(self):
@@ -229,6 +275,7 @@ class ChickenCatch(Quest):
         if not self.completed:
             if self.game_data['player_data']['chickens']['amount'] == 23:
                 self.completed = True
+                self.game_data['quest_data'][self.name]['i'] = 1
     
     def deactivate(self):
         self.active = False
@@ -236,6 +283,6 @@ class ChickenCatch(Quest):
         self.game_data['player_data']['chickens']['catch'] = False
         self.game_data['player_data']['chickens']['show'] = False
         self.game_data['player_data']['catched_chickens'].clear()
-        
+        self.game_data['player_data']['chickens']['amount'] = 0
 
-        
+
