@@ -19,7 +19,7 @@ SFX = tools.load_all_sfx(os.path.join('assets', 'sfx'))
 
 pg.display.set_icon(GFX['icon'])
 
-def play_sfx(sound_name, volume=0.1):
+def play_sfx(sound_name, volume=c.SFX_DEFAULT_VOLUME):
     sound = SFX[sound_name]
     sound.set_volume(volume)
     sound.play()
