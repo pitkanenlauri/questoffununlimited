@@ -94,10 +94,21 @@ class MapState(State):
                                           obj.id,
                                           obj.properties['color'])
                         sprites.add(sprite)
-            
+
             if obj.name == 'uncle':
                 sprite = s.Sprite(obj.name, obj.x, obj.y)
                 sprites.add(sprite)
+            
+            if 'chicken_rescue' not in self.game_data['active_quests']:
+                if obj.name == 'uncle_out':
+                    sprite = s.Sprite('uncle', obj.x, obj.y)
+                    sprites.add(sprite)
+                if obj.name == 'chicken_rgb':
+                    sprite = s.Chicken(obj.x, obj.y, 
+                                       obj.properties['direction'], 
+                                       obj.id,
+                                       obj.properties['color'])
+                    sprites.add(sprite)
         
         return sprites
     
@@ -160,8 +171,9 @@ class MapState(State):
         layer = self.tmx_renderer.get_layer('dialogues')
         
         for obj in layer:
-            dialogue = Dialogue(obj.name, obj.x, obj.y, obj.properties)
-            dialogues.append(dialogue)
+            if obj.name == 'normal' or obj.name not in self.game_data['active_quests']:
+                dialogue = Dialogue(obj.name, obj.x, obj.y, obj.properties)
+                dialogues.append(dialogue)
         
         return dialogues
     
@@ -197,12 +209,13 @@ class MapState(State):
         collided = False
         for dialogue in self.dialogues:
             if self.player.rect.colliderect(dialogue.rect):
-                if self.check_if_quest_dialog(dialogue):
-                    pass
-                else:
-                    self.text_box.give_text(dialogue.dict['normal'])
+                if not self.text_box.active:
+                    if self.check_if_quest_dialog(dialogue):
+                        pass
+                    else:
+                        self.text_box.give_text(dialogue.dict['normal'])
+                    self.text_box.active = True
                 
-                self.text_box.active = True
                 collided = True
         
         if not collided:

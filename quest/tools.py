@@ -102,14 +102,14 @@ def create_game_data_dict():
     ##################################################
     chicken_rescue = {'class_name': ChickenRescue(),
                       'i': 0,
-                      'dialogs': {0: 'start',
-                                  1: 'complete'}
+                      'dialogs': {0: 'rescue_start',
+                                  1: 'rescue_complete'}
     }
     
     chicken_catch = {'class_name': ChickenCatch(),
                      'i': 0,
-                     'dialogs': {0: 'run_away',
-                                 1: 'thanks'}
+                     'dialogs': {0: 'catch_start',
+                                 1: 'catch_complete'}
     }
     
     quests = {'chicken_rescue': chicken_rescue,
@@ -233,19 +233,20 @@ class ChickenRescue(Quest):
     def __init__(self):
         super().__init__()
         self.name = 'chicken_rescue'
+        self.chickens_to_rescue = 3
     
     def open(self, game_data):
         game_data['player_data']['chickens']['show'] = True
-        game_data['player_data']['chickens']['max'] = 3
+        game_data['player_data']['chickens']['max'] = self.chickens_to_rescue
         if game_data['current_map'] == c.MYSTERIOUS_CAVE:
             game_data['player_data']['chickens']['catchable'] = True
             game_data['player_data']['chickens']['rescue'] = True
         self.game_data = game_data
         
-        
     def update(self):
         if not self.completed:
-            if self.game_data['player_data']['chickens']['amount'] == 3:
+            if (self.game_data['player_data']['chickens']['amount'] == 
+            self.chickens_to_rescue):
                 self.completed = True
                 self.game_data['quest_data'][self.name]['i'] = 1
     
@@ -255,17 +256,19 @@ class ChickenRescue(Quest):
         self.game_data['player_data']['chickens']['rescue'] = False
         self.game_data['player_data']['chickens']['show'] = False
         self.game_data['player_data']['chickens']['amount'] = 0
-        self.game_data['active_quests'].add('chicken_catch')
+        # TODO Is this where the chicken catch will begin?
+        #self.game_data['active_quests'].add('chicken_catch')
 
 
 class ChickenCatch(Quest):
     def __init__(self):
         super().__init__()
         self.name = 'chicken_catch'
+        self.chickens_to_catch = 23
     
     def open(self, game_data):
         game_data['player_data']['chickens']['show'] = True
-        game_data['player_data']['chickens']['max'] = 23
+        game_data['player_data']['chickens']['max'] = self.chickens_to_catch
         if game_data['current_map'] == c.SANDY_COVE:
             game_data['player_data']['chickens']['catchable'] = True
             game_data['player_data']['chickens']['catch'] = True
@@ -273,7 +276,8 @@ class ChickenCatch(Quest):
     
     def update(self):
         if not self.completed:
-            if self.game_data['player_data']['chickens']['amount'] == 23:
+            if (self.game_data['player_data']['chickens']['amount'] == 
+            self.chickens_to_catch):
                 self.completed = True
                 self.game_data['quest_data'][self.name]['i'] = 1
     
