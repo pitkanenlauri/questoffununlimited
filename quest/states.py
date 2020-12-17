@@ -109,6 +109,10 @@ class MapState(State):
                                        obj.id,
                                        obj.properties['color'])
                     sprites.add(sprite)
+            else:
+                if obj.name == 'uncle_in':
+                    sprite = s.Sprite('uncle', obj.x, obj.y)
+                    sprites.add(sprite)
         
         return sprites
     
@@ -171,7 +175,8 @@ class MapState(State):
         layer = self.tmx_renderer.get_layer('dialogues')
         
         for obj in layer:
-            if obj.name == 'normal' or obj.name not in self.game_data['active_quests']:
+            if (obj.type == 'normal' or 
+            obj.type not in self.game_data['active_quests']):
                 dialogue = Dialogue(obj.name, obj.x, obj.y, obj.properties)
                 dialogues.append(dialogue)
         
