@@ -20,12 +20,6 @@ class MapState(State):
         self.previous_music = None
         self.music = None
         self.volume = None
-        
-        # TODO Do this in the menu when it is implemented.
-        if self.name == c.SANDY_COVE:
-            self.music = MUSIC['cove']
-            self.music_title = 'cove'
-            self.volume = 0.2
     
     def start_up(self, game_data):
         self.game_data = game_data

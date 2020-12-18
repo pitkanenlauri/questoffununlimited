@@ -15,3 +15,4 @@ BROWN = (68, 57, 52)
 SANDY_COVE = 'sandy_cove'
 MYSTERIOUS_CAVE = 'mysterious_cave'
 TRANQUIL_CABIN = 'tranquil_cabin'
+MAIN_MENU = 'main_menu'
