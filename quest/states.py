@@ -29,10 +29,12 @@ class MapState(State):
     
     def start_up(self, game_data):
         self.game_data = game_data
-        self.state = 'normal'
+        self.state = 'transition_in'
         self.map_state = self.make_map_state_dict()
         self.game_data['current_map'] = self.name
         self.music, self.volume = self.set_music()
+        self.transition_alpha = 255
+        self.fade_speed = 2
         
         self.show_inventory = True
         self.inventory = self.game_data['player_data']
@@ -186,7 +188,7 @@ class MapState(State):
         for portal in self.portals:
             if self.player.rect.colliderect(portal.rect):
                 self.next = portal.name
-                self.done = True
+                self.state = 'transition_out'
                 if portal.sound == 'door':
                     play_sfx('door')
     
@@ -241,7 +243,9 @@ class MapState(State):
         return False
         
     def make_map_state_dict(self):
-        map_state_dict = {'normal': self.running_normally
+        map_state_dict = {'normal': self.running_normally,
+                          'transition_in': self.transition_in,
+                          'transition_out': self.transition_out
         }
         return map_state_dict
     
@@ -263,7 +267,37 @@ class MapState(State):
         self.check_quest_progress()
         self.camera.update(self.player.rect)
         self.update_window(window)
-        
+    
+    def transition_in(self, window, keys, dt, events):
+        self.fade = True
+        image = pg.Surface(c.WINDOW_SIZE)
+        image.fill(c.BLACK)
+        image.set_alpha(self.transition_alpha)
+        self.transition_image = image
+        self.camera.update(self.player.rect)
+        self.update_window(window)
+        self.transition_alpha -= int(round(self.fade_speed))
+        self.fade_speed *= 1.1
+        if self.transition_alpha <= 0:
+            self.state = 'normal'
+            self.transition_alpha = 0
+            self.fade = False
+
+    def transition_out(self, window, keys, dt, events):
+        self.fade = True
+        image = pg.Surface(c.WINDOW_SIZE)
+        image.fill(c.BLACK)
+        image.set_alpha(self.transition_alpha)
+        self.transition_image = image
+        self.camera.update(self.player.rect)
+        self.update_window(window)
+        self.transition_alpha += int(self.fade_speed)
+        self.fade_speed *= 0.9
+        if self.transition_alpha >= 255:
+            self.done = True
+            self.transition_alpha = 255
+            self.fade = False
+
     def update_window(self, window):
         window.blit(self.map_image, self.camera.apply(self.map_rect))
         
@@ -286,6 +320,9 @@ class MapState(State):
         if self.text_box.show:
             window.blit(self.text_box.image, self.text_box.rect)
         
+        if self.fade:
+            window.blit(self.transition_image, (0, 0))
+
         new = pg.transform.scale2x(window)
         window.blit(new, (0, 0))
         
