@@ -28,6 +28,7 @@ def main():
             if (event.type == pg.QUIT or 
                 event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 return
+
         keys = pg.key.get_pressed()
         # Update game state through GameStateManager.
         gm.update(setup.window, keys, dt, events)

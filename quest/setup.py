@@ -9,7 +9,9 @@ os.environ['SDL_VIDEO_CENTERED'] = 'TRUE'
 
 pg.init()
 pg.display.set_caption(c.CAPTION)
-window = pg.display.set_mode(c.WINDOW_SIZE)
+display = pg.display.set_mode(c.DISPLAY_SIZE)
+surf_to_display = pg.Surface(c.DISPLAY_SIZE)
+window = pg.Surface(c.WINDOW_SIZE)
 
 GFX = tools.load_all_gfx(os.path.join('assets', 'graphics'))
 TMX = tools.load_all_tmx(os.path.join('assets', 'tmx'))
@@ -23,3 +25,8 @@ def play_sfx(sound_name, volume=c.SFX_DEFAULT_VOLUME):
     sound = SFX[sound_name]
     sound.set_volume(volume)
     sound.play()
+
+def update_display(window):
+    pg.transform.scale(window, c.DISPLAY_SIZE, surf_to_display)
+    display.blit(surf_to_display, (0, 0))
+    pg.display.flip()

@@ -2,7 +2,7 @@ import pygame as pg
 from tmx_renderer import Renderer
 
 from states import MapState
-from setup import TMX, MUSIC, FONTS, play_sfx
+from setup import update_display, TMX, MUSIC, FONTS, play_sfx
 from tools import State
 
 from sprites import Sprite, Chicken
@@ -63,7 +63,7 @@ class MainMenu(MapState):
                     sprite.begin_resting()
         
         self.draw(window)
-        pg.display.flip()
+        update_display(window)
 
         if self.selector.start_game:
             self.next = c.TRANQUIL_CABIN
@@ -75,36 +75,33 @@ class MainMenu(MapState):
 
         for sprite in self.menu_sprites:
             window.blit(sprite.image, sprite.rect)
-
-        new = pg.transform.scale2x(window)
-        window.blit(new, (0, 0))
-
+        
         self.draw_title(window)
         self.draw_menu(window)
-    
+
     def draw_title(self, window):
-        font = pg.font.Font(FONTS['SuperLegendBoy'], 32)
+        font = pg.font.Font(FONTS['SuperLegendBoy'], 16)
         title_text = c.CAPTION
-        top_x = self.get_top_x(title_text, 32)
+        top_x = self.get_top_x(title_text, 16)
         title = font.render(title_text, True, c.WHITE)
-        window.blit(title, (top_x, 96))
+        window.blit(title, (top_x, 48))
     
     def draw_menu(self, window):
-        font = pg.font.Font(FONTS['SuperLegendBoy'], 16)
+        font = pg.font.Font(FONTS['SuperLegendBoy'], 8)
         line1_text = 'Start a new game !'
-        line1_top_x = self.get_top_x(line1_text, 16)
+        line1_top_x = self.get_top_x(line1_text, 8)
         line1 = font.render(line1_text, True, c.WHITE)
-        window.blit(line1, (line1_top_x, 200))
+        window.blit(line1, (line1_top_x, 100))
 
         line2_text = 'Load game'
-        line2_top_x = self.get_top_x(line2_text, 16)
+        line2_top_x = self.get_top_x(line2_text, 8)
         line2 = font.render(line2_text, True, c.WHITE)
-        window.blit(line2, (line2_top_x, 232))
+        window.blit(line2, (line2_top_x, 116))
 
         line3_text = 'Exit'
-        line3_top_x = self.get_top_x(line3_text, 16)
+        line3_top_x = self.get_top_x(line3_text, 8)
         line3 = font.render(line3_text, True, c.WHITE)
-        window.blit(line3, (line3_top_x, 264))
+        window.blit(line3, (line3_top_x, 132))
 
     def get_top_x(self, text, font_size):
         font = pg.font.Font(FONTS['SuperLegendBoy'], font_size)

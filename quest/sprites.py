@@ -31,14 +31,13 @@ class Sprite(pg.sprite.Sprite):
 
         self.blockers = self.set_blockers()
         
-    def create_spritesheet_dict(self, sheet_key):
+    def create_spritesheet_dict(self, sheet_key, tw=c.TILE_WIDTH):
         """
         Makes a dictionary of images from sprite sheet.
         """
         image_list = []
         image_dict = {}
         sheet = GFX[sheet_key]
-        tw = c.TILE_WIDTH
         
         # u = up, d = down, l = left, r = right
         image_keys = ['u0', 'u1', 'u2', 'u3',
@@ -168,7 +167,7 @@ class Sprite(pg.sprite.Sprite):
             else:
                 self.rect.y += (tw - y_off)
     
-    def set_blockers(self):
+    def set_blockers(self, tw=c.TILE_WIDTH):
         """
         Creates blocker rects to prevent collision with other sprites.
         If sprite is resting, blocker is sprite.rect.
@@ -177,7 +176,6 @@ class Sprite(pg.sprite.Sprite):
         """
         blockers = []
         
-        tw = c.TILE_WIDTH
         x = self.rect.x
         y = self.rect.y
         
@@ -419,4 +417,29 @@ class TextBox(pg.sprite.Sprite):
             start = end + 1
         yield text[start:]
     
+
+class Boat(Sprite):
+    def __init__(self, sheet_key, x, y, direction):
+        super().__init__(sheet_key, x, y, direction)
+        self.moves = ['right', 'right', 'right', 'down', 'down',
+                      'left', 'left', 'left', 'up', 'up']
+        self.index = 0
+        self.speed = 0.5
     
+    def create_spritesheet_dict(self, sheet_key, tw=32):
+        return super().create_spritesheet_dict(sheet_key, tw=tw)
+    
+    def auto_moving(self):
+        if self.index > 9:
+            self.index = 0
+        self.begin_moving(self.moves[self.index])
+        self.index += 1
+    
+    def update(self, dt):
+        if self.action == 'resting':
+            self.auto_moving()
+        super().update(dt)
+
+
+
+

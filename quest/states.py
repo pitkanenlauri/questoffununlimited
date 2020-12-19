@@ -3,7 +3,7 @@ import pygame as pg
 import constants as c
 import sprites as s
 from tools import State, Camera, Portal, Dialogue
-from setup import TMX, GFX, FONTS, MUSIC, play_sfx
+from setup import update_display, TMX, GFX, FONTS, MUSIC, play_sfx
 from tmx_renderer import Renderer
 
 class MapState(State):
@@ -109,6 +109,10 @@ class MapState(State):
                 if obj.name == 'uncle_in':
                     sprite = s.Sprite('uncle', obj.x, obj.y)
                     sprites.add(sprite)
+            
+            if obj.name == 'boat_player':
+                sprite = s.Boat(obj.name, obj.x, obj.y, 'right')
+                sprites.add(sprite)
         
         return sprites
     
@@ -316,11 +320,8 @@ class MapState(State):
         
         if self.fade:
             window.blit(self.transition_image, (0, 0))
-
-        new = pg.transform.scale2x(window)
-        window.blit(new, (0, 0))
         
-        pg.display.flip()
+        update_display(window)
     
     def handle_collisions(self):
         player_collided = False
@@ -389,8 +390,8 @@ class MapState(State):
         """
         Set music based on states name.
         """
-        music_dict = {c.SANDY_COVE: ('cove', 0.2),
-                      c.MYSTERIOUS_CAVE: ('cave', 0.4),
+        music_dict = {c.SANDY_COVE: ('cove', 0.4),
+                      c.MYSTERIOUS_CAVE: ('cave', 0.6),
                       c.TRANQUIL_CABIN: ('cabin', 0.1)
         }
         
@@ -426,7 +427,7 @@ class MapState(State):
         if (sprite.name == 'chicken_move' and self.inventory['chickens']['catch']
             and self.name == c.SANDY_COVE):
             if self.player.rect.colliderect(sprite.rect):
-                play_sfx('chicken')
+                play_sfx('chicken', 0.4)
                 self.inventory['catched_chickens'].add(sprite.tiled_id)
                 self.inventory['chickens']['amount'] += 1
                 sprite.kill()
@@ -435,7 +436,7 @@ class MapState(State):
         if (sprite.name == 'red_move' or 
             sprite.name == 'green_move' or sprite.name == 'blue_move'):
             if self.player.rect.colliderect(sprite.rect):
-                play_sfx('chicken')
+                play_sfx('chicken', 0.4)
                 self.inventory['found_items'].add(sprite.tiled_id)
                 self.inventory['chickens']['amount'] += 1
                 sprite.kill()

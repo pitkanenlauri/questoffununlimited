@@ -1,7 +1,8 @@
 # Constants used throughout the game.
 
 CAPTION = "Quest of Fun Unlimited"
-WINDOW_SIZE = (640, 480)
+WINDOW_SIZE = (320, 240)
+DISPLAY_SIZE = (640, 480)
 FPS = 60
 TILE_WIDTH = 16
 ANIMATION_SPEED = 16 # For map objects
