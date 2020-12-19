@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="844">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="850">
  <tileset firstgid="1" source="overworld.tsx"/>
  <tileset firstgid="1441" source="objects.tsx"/>
  <tileset firstgid="2101" source="object_icons.tsx"/>
@@ -781,11 +781,6 @@
   <object id="733" gid="2371" x="304" y="336" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="7" name="start_points">
-  <object id="492" name="start" gid="2341" x="176" y="784" width="16" height="16">
-   <properties>
-    <property name="direction" value="right"/>
-   </properties>
-  </object>
   <object id="513" name="mysterious_cave" gid="2341" x="496" y="64" width="16" height="16">
    <properties>
     <property name="direction" value="down"/>
@@ -794,11 +789,6 @@
   <object id="781" name="tranquil_cabin" gid="2341" x="336" y="688" width="16" height="16">
    <properties>
     <property name="direction" value="down"/>
-   </properties>
-  </object>
-  <object id="843" name="main_menu" gid="2341" x="176" y="704" width="16" height="16">
-   <properties>
-    <property name="direction" value="right"/>
    </properties>
   </object>
  </objectgroup>
@@ -827,7 +817,7 @@
     <property name="direction" value="up"/>
    </properties>
   </object>
-  <object id="502" name="chicken" gid="2331" x="256" y="800" width="16" height="16">
+  <object id="502" name="chicken" gid="2331" x="208" y="784" width="16" height="16">
    <properties>
     <property name="direction" value="left"/>
    </properties>
@@ -1566,13 +1556,6 @@
   </object>
  </objectgroup>
  <objectgroup id="12" name="map_items">
-  <object id="761" name="coin" gid="1573" x="208" y="784" width="16" height="16">
-   <properties>
-    <property name="frame_height" type="int" value="16"/>
-    <property name="frame_width" type="int" value="16"/>
-    <property name="frames" type="int" value="4"/>
-   </properties>
-  </object>
   <object id="770" name="coin" gid="1573" x="336" y="784" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
@@ -1623,6 +1606,48 @@
    </properties>
   </object>
   <object id="777" name="coin" gid="1573" x="496" y="128" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="844" name="coin" gid="1573" x="432" y="336" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="845" name="coin" gid="1573" x="336" y="208" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="846" name="coin" gid="1573" x="224" y="368" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="847" name="coin" gid="1573" x="752" y="400" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="848" name="coin" gid="1573" x="544" y="912" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="849" name="coin" gid="1573" x="672" y="800" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>

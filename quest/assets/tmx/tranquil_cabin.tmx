@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="65">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="66">
  <tileset firstgid="1" source="house.tsx"/>
  <tileset firstgid="1001" source="object_icons.tsx"/>
  <layer id="7" name="Tile Layer 1" width="20" height="15">
@@ -131,6 +131,11 @@
   <object id="56" name="sandy_cove" gid="1241" x="160" y="208" width="16" height="16">
    <properties>
     <property name="direction" value="up"/>
+   </properties>
+  </object>
+  <object id="65" name="main_menu" gid="1241" x="128" y="112" width="16" height="16">
+   <properties>
+    <property name="direction" value="down"/>
    </properties>
   </object>
  </objectgroup>

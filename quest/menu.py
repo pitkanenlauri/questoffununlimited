@@ -2,17 +2,20 @@ import pygame as pg
 from tmx_renderer import Renderer
 
 from states import MapState
-from setup import MUSIC
+from setup import TMX, MUSIC, FONTS, play_sfx
 from tools import State
 
-from sprites import Sprite
+from sprites import Sprite, Chicken
 import constants as c
 
 class MainMenu(MapState):
     def __init__(self, name):
-        super().__init__(name)
-        self.music = MUSIC['intro']
+        State.__init__(self)
+        self.name = name
+        self.tmx_map = TMX[name]
+        self.previous_music = None
         self.music_title = 'intro'
+        self.music = MUSIC[self.music_title]
         self.volume = 1.0
 
     def start_up(self, game_data):
@@ -23,8 +26,9 @@ class MainMenu(MapState):
         self.map_image = self.tmx_renderer.render_map()
         self.map_rect = self.map_image.get_rect()
 
-        self.player = self.make_selector()
+        self.selector = self.make_selector()
         self.blockers = self.make_blockers()
+        self.menu_sprites = self.make_menu_sprites()
 
     def make_selector(self):
         layer = self.tmx_renderer.get_layer('start_points')
@@ -34,32 +38,85 @@ class MainMenu(MapState):
                 selector = Selector(obj.x, obj.y)
                 return selector
 
+    def make_menu_sprites(self):
+        menu_sprites = pg.sprite.Group()
+        layer = self.tmx_renderer.get_layer('sprites')
+
+        for obj in layer:
+            if obj.name == 'chicken':
+                chicken = Chicken(obj.x, obj.y, 'down', color='red')
+                menu_sprites.add(chicken)
+        
+        return menu_sprites
+
     def clean_up(self):
         return State.clean_up(self)
     
     def update(self, window, keys, dt, events):
-        self.player.update(events, dt)
+        self.selector.update(events, dt)
+        self.menu_sprites.update(dt)
         for blocker in self.blockers:
-            if self.player.rect.colliderect(blocker):
-                self.player.begin_resting()
-        window.fill(c.BLACK)
-        window.blit(self.player.image, self.player.rect)
+            if self.selector.rect.colliderect(blocker):
+                self.selector.begin_resting()
+            for sprite in self.menu_sprites:
+                if sprite.rect.colliderect(blocker):
+                    sprite.begin_resting()
         
-        new = pg.transform.scale2x(window)
-        window.blit(new, (0, 0))
-        
+        self.draw(window)
         pg.display.flip()
 
-        if self.player.go:
-            self.next = c.SANDY_COVE
+        if self.selector.start_game:
+            self.next = c.TRANQUIL_CABIN
             self.done = True
+    
+    def draw(self, window):
+        window.fill(c.BLACK)
+        window.blit(self.selector.image, self.selector.rect)
+
+        for sprite in self.menu_sprites:
+            window.blit(sprite.image, sprite.rect)
+
+        new = pg.transform.scale2x(window)
+        window.blit(new, (0, 0))
+
+        self.draw_title(window)
+        self.draw_menu(window)
+    
+    def draw_title(self, window):
+        font = pg.font.Font(FONTS['SuperLegendBoy'], 32)
+        title_text = c.CAPTION
+        top_x = self.get_top_x(title_text, 32)
+        title = font.render(title_text, True, c.WHITE)
+        window.blit(title, (top_x, 96))
+    
+    def draw_menu(self, window):
+        font = pg.font.Font(FONTS['SuperLegendBoy'], 16)
+        line1_text = 'Start a new game !'
+        line1_top_x = self.get_top_x(line1_text, 16)
+        line1 = font.render(line1_text, True, c.WHITE)
+        window.blit(line1, (line1_top_x, 200))
+
+        line2_text = 'Load game'
+        line2_top_x = self.get_top_x(line2_text, 16)
+        line2 = font.render(line2_text, True, c.WHITE)
+        window.blit(line2, (line2_top_x, 232))
+
+        line3_text = 'Exit'
+        line3_top_x = self.get_top_x(line3_text, 16)
+        line3 = font.render(line3_text, True, c.WHITE)
+        window.blit(line3, (line3_top_x, 264))
+
+    def get_top_x(self, text, font_size):
+        font = pg.font.Font(FONTS['SuperLegendBoy'], font_size)
+        size = font.size(text)
+        return (c.WINDOW_SIZE[0] - size[0]) // 2
 
 
 class Selector(Sprite):
     def __init__(self, x, y):
         super().__init__('selector', x, y)
-        self.speed = 3
-        self.go = False
+        self.speed = 2
+        self.start_game = False
     
     def update(self, events, dt):
         self.check_for_input(events)
@@ -70,12 +127,10 @@ class Selector(Sprite):
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_DOWN:
                     self.begin_moving('down')
+                    play_sfx('select', 0.5)
                 elif event.key == pg.K_UP:
                     self.begin_moving('up')
-                elif event.key == pg.K_RETURN:
-                    self.go = True
-
-    def do_step(self):
-        # selector sound
-        pass
+                    play_sfx('select', 0.5)
+                elif event.key == pg.K_RETURN or event.key == pg.K_SPACE:
+                    self.start_game = True
 
