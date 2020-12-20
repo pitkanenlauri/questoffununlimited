@@ -3,7 +3,7 @@ import pygame as pg
 import constants as c
 import sprites as s
 from tools import State, Camera, Portal, Dialogue
-from setup import update_display, TMX, GFX, FONTS, MUSIC, play_sfx
+from setup import update_display, play_sfx, TMX, GFX, FONTS, MUSIC
 from tmx_renderer import Renderer
 
 class MapState(State):
@@ -45,10 +45,10 @@ class MapState(State):
         self.player = self.make_player()
         self.sprites = self.make_sprites()
         self.blockers = self.make_blockers()
-        self.portals = self.open_portals()
+        self.portals = self.make_portals()
         self.map_objects = self.make_map_objects()
         self.map_items = self.make_map_items()
-        self.dialogues = self.load_dialogues()
+        self.dialogues = self.make_dialogues()
         
     def make_player(self):
         layer = self.tmx_renderer.get_layer('start_points')
@@ -160,7 +160,7 @@ class MapState(State):
         
         return map_items
     
-    def open_portals(self):
+    def make_portals(self):
         portals = []
         layer = self.tmx_renderer.get_layer('portals')
         
@@ -170,7 +170,7 @@ class MapState(State):
         
         return portals
     
-    def load_dialogues(self):
+    def make_dialogues(self):
         dialogues = []
         layer = self.tmx_renderer.get_layer('dialogues')
         

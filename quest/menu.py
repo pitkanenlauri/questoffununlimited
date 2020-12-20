@@ -2,7 +2,7 @@ import pygame as pg
 from tmx_renderer import Renderer
 
 from states import MapState
-from setup import update_display, TMX, MUSIC, FONTS, play_sfx
+from setup import update_display, play_sfx, TMX, MUSIC, FONTS
 from tools import State
 
 from sprites import Sprite, Chicken

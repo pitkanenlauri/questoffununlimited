@@ -356,7 +356,8 @@ class TextBox(pg.sprite.Sprite):
         super().__init__()
         self.image = pg.Surface([240, 80])
         self.clear()
-        self.rect = self.image.get_rect(midbottom = (160, 240))
+        self.rect = self.image.get_rect(
+            midbottom = (c.WINDOW_SIZE[0] // 2, c.WINDOW_SIZE[1]))
         self.font = pg.font.Font(FONTS['SuperLegendBoy'], 8)
         self.index = 0
         self.line_length = 37
