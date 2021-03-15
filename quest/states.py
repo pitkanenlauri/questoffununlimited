@@ -377,6 +377,12 @@ class MapState(State):
             'x' + str(self.inventory['gold']), True, c.WHITE)
         window.blit(coin_amount, (tw + x, (i * tw)+ y))
         i += 1
+
+        window.blit(GFX['hearts'], (0, i * tw))
+        coin_amount = self.font.render(
+            'x' + str(self.inventory['hearts']), True, c.WHITE)
+        window.blit(coin_amount, (tw + x, (i * tw)+ y))
+        i += 1
         
         if self.inventory['chickens']['show']:
             window.blit(GFX['chickens'], (0, i * tw))
