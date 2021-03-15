@@ -34,7 +34,7 @@ def main():
         
         # Show fps in caption.
         fps = clock.get_fps()
-        with_fps = "{} - {:.2f} FPS".format(c.CAPTION, fps)
+        with_fps = f"{c.CAPTION} - {fps:.2f} FPS"
         pg.display.set_caption(with_fps)
         
         
