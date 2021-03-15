@@ -1,4 +1,5 @@
 import pygame as pg
+import sys
 from tmx_renderer import Renderer
 
 from states import MapState
@@ -88,21 +89,14 @@ class MainMenu(MapState):
     
     def draw_menu(self, window):
         font = pg.font.Font(FONTS['SuperLegendBoy'], 8)
-        line1_text = 'Start a new game !'
-        line1_top_x = self.get_top_x(line1_text, 8)
-        line1 = font.render(line1_text, True, c.WHITE)
-        window.blit(line1, (line1_top_x, 100))
+        self.draw_menu_line(window, font, 0, 'Start a new game !')
+        self.draw_menu_line(window, font, 1, 'Load game')
+        self.draw_menu_line(window, font, 2, 'Exit')
 
-        line2_text = 'Load game'
-        line2_top_x = self.get_top_x(line2_text, 8)
-        line2 = font.render(line2_text, True, c.WHITE)
-        window.blit(line2, (line2_top_x, 116))
-
-        line3_text = 'Exit'
-        line3_top_x = self.get_top_x(line3_text, 8)
-        line3 = font.render(line3_text, True, c.WHITE)
-        window.blit(line3, (line3_top_x, 132))
-
+    def draw_menu_line(self, window, font, line_number, line_text):
+        line = font.render(line_text, True, c.WHITE)
+        window.blit(line, (self.get_top_x(line_text, 8), 100 + line_number*16))
+        
     def get_top_x(self, text, font_size):
         font = pg.font.Font(FONTS['SuperLegendBoy'], font_size)
         size = font.size(text)
@@ -129,5 +123,10 @@ class Selector(Sprite):
                     self.begin_moving('up')
                     play_sfx('select', 0.5)
                 elif event.key == pg.K_RETURN or event.key == pg.K_SPACE:
-                    self.start_game = True
-
+                    if self.rect.y == 96:
+                        self.start_game = True
+                    if self.rect.y == 112:
+                        pass
+                    if self.rect.y == 128:
+                        pg.quit()
+                        sys.exit()
