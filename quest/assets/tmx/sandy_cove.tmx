@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="855">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="862">
  <tileset firstgid="1" source="overworld.tsx"/>
  <tileset firstgid="1441" source="objects.tsx"/>
  <tileset firstgid="2101" source="object_icons.tsx"/>
@@ -1662,6 +1662,34 @@
    </properties>
   </object>
   <object id="854" name="coin" gid="1573" x="208" y="896" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="858" name="heart" gid="1540" x="272" y="928" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="859" name="heart" gid="1540" x="624" y="832" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="860" name="heart" gid="1540" x="256" y="384" width="16" height="16">
+   <properties>
+    <property name="frame_height" type="int" value="16"/>
+    <property name="frame_width" type="int" value="16"/>
+    <property name="frames" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="861" name="heart" gid="1540" x="208" y="688" width="16" height="16">
    <properties>
     <property name="frame_height" type="int" value="16"/>
     <property name="frame_width" type="int" value="16"/>

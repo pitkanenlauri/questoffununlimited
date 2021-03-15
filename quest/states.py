@@ -209,6 +209,12 @@ class MapState(State):
                         play_sfx('monster2', 1.0)
                         found_items.add(item.tiled_id)
                         item.kill()
+                if item.name == 'heart':
+                    play_sfx('heartbeat', 1.0)
+                    found_items.add(item.tiled_id)
+                    self.inventory['hearts'] += 1
+                    item.kill()
+
                     
     def check_for_dialogue(self):
         collided = False

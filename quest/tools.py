@@ -95,7 +95,8 @@ def create_game_data_dict():
                                 'rescue': False,
                                 'catch': False},
                    'found_items': set(),
-                   'catched_chickens': set()
+                   'catched_chickens': set(),
+                   'hearts': 0
                    }
     
     # Data for quests.
@@ -125,7 +126,7 @@ def create_game_data_dict():
                       }
     return game_data_dict
 
-def load_all_gfx(directory, colorkey=c.WHITE, accept=('.png', 'jpg', 'bmp')):
+def load_all_gfx(directory, colorkey=c.WHITE, accept=('.png', '.jpg', '.bmp')):
     graphics = {}
     for pic in os.listdir(directory):
         name, ext = os.path.splitext(pic)
@@ -166,8 +167,6 @@ class Camera:
     """
     Class to handle world scrolling. Applying moves target rect position so 
     that screen view is centered on source_rect.
-    NOTE: 320 and 240 are because used tileset is 16 bits and we scale it 2x.
-    Incase you remove 2x scaling change to true window width and height.
     """
     def __init__(self, map_width, map_height):
         self.state = pg.Rect(0, 0, map_width, map_height)
