@@ -16,7 +16,7 @@ Game assets are from opengameart with CC0 license and self made/modified.
 
 **How to play:** Use arrow keys to move and space to interact. (shift toggles running on/off)
 
-## Screenshots of the game running
+## Screenshots
 
 ![Screenshot of the game running.](/quest_screenshot_menu.png)
 
