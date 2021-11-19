@@ -1,6 +1,6 @@
 # Quest Of Fun Unlimited
 
-RPG made using Python, Pygame and Tiled level editor.
+Gameboy pokemon/zelda style RPG made using Python, Pygame and Tiled level editor.
 
 Code implementation supports easy addition of new levels. New levels can be made with Tiled (with appropriate object layers, see already made levels.) and only few lines of code are needed to add them to the game. 
 
