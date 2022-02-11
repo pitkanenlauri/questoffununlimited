@@ -25,3 +25,5 @@ Game assets are from opengameart with CC0 license and self made/modified.
 ![Screenshot of the game running.](/quest_screenshot_overworld.png)
 
 ![Screenshot of the game running.](/quest_screenshot_dungeon.png)
+
+![Screenshot of the game running.](/quest_screenshot_textbox.PNG)
